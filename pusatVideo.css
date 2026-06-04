@@ -1,0 +1,356 @@
+:root {
+  --accent: #ff6b2d;
+  --muted: #f4f6f8;
+  --text: #1f2937;
+  --sub: #6b7280;
+  --card: #fff;
+}
+
+/* Main container layout */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  padding: 12px 18px;
+  background:#ffffff;
+  border-bottom: 1px solid #474747;
+  margin-right: 5px;
+  position: sticky;
+  top: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #0b1a3a;
+}
+
+.logo {
+  height: 36px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.sub {
+  font-size: 12px;
+}
+
+nav ul {
+  list-style: none; /* menghilangkan titik list */
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+nav ul li a {
+  text-decoration: none; /* untuk menghilangkan garis bawah */
+  color: #000000;
+  font-size: 12px;
+}
+
+.right-section {
+  display: flex;
+  gap: 16px;
+}
+
+.search {
+  width: 100%;
+  display: flex;
+  border: 1px solid #000000; /solid itu garis pinggiran/
+  border-radius: 8px;
+  overflow: hidden; /memastikan isi kotak tidak tumpah keluar/
+}
+
+.logo-search {
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+.search input {
+  border: none; /*menghilangkan border cari default*/
+  padding: 10px;
+  font-size: 14px;
+  outline: none; /* menghilangkan garis luar kalo kita pencet cari*/
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-bahasa {
+  width: 20px;
+  height: 20px;
+  display: flex;
+}
+
+.select {
+  border: 1px solid #e2e6ef;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.account a{
+  text-decoration: none;
+  color: #000000;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover; /* agar foto tidak melebar */
+}
+
+.container {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--accent);
+  text-align: center;
+}
+
+/* LEFT SIDE - VIDEO */
+.video-section {
+  max-width: 900px;
+  width: 100%;
+}
+
+.video-wrapper {
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
+
+video {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.video-title {
+  margin-top: 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.video-desc {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.video-extra {
+    margin-top: 24px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    flex-direction: column;
+    gap: 2opx;
+}
+
+.teacher-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.teacher-foto {
+    width: 64px;
+    height: 64px;
+    border-radius:50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+.video-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.like-main {
+    padding: 10px 12px;
+    background: #ff6b2d;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.like-main:hover {
+    background: #fff;
+    transform: scale(1.05s);
+}
+
+.download-main {
+    padding: 10px 16px;
+    background: #2563eb;
+    text-decoration: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.download-main:hover {
+    background: #fff;
+    transform: scale(1.05s);
+}
+
+/* COMMENTS */
+.comment-section {
+  margin-top: 24px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.comment-box {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.comment-box input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.comment-box button {
+  padding: 10px 16px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-item {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* RIGHT SIDE - RECOMMENDATION */
+.recommend-section {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rec-card {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.rec-thumb {
+  width: 120px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.rec-info {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+/* Tombol Like */
+.like-btn {
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: #ff6b2d;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: fit-content;
+  transition: 0.2s;
+}
+
+.like-btn:hover {
+  background: #e45a1f;
+  transform: scale(1.05);
+}
+
+
+
+footer {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.textfooter {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.logososmed {
+  display: flex;
+  gap: 20px;
+}
+
+.logososmed img {
+  width: 20px;
+  height: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .recommend-section {
+    width: 100%;
+  }
+}

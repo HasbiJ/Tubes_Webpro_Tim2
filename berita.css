@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f9fafb;
+    color: #333;
+}
+
+.navbar{
+    display: flex;
+    padding: 14px 40px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.logo img{
+    width: 28px;
+}
+
+.menu a {
+    margin: 0 12px;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+}
+
+.user img{
+    width: 36px;
+    height: 36px;
+}
+
+
+/* Content */
+.container {
+    padding: 40px;
+}
+
+.page-tittle {
+    margin-bottom: 24px;
+}
+
+/* Grid */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 24px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+}
+
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: #000000;
+}
+
+
+.card img{
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.card-body h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.card-body span {
+    font-size: 13px;
+    color: #888;
+}
+
+.card-body p{
+    font-size: 13px;
+    margin-top: 8px;
+    color: #555;
+}
+
+footer {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: static;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.textfooter {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.logososmed {
+  display: flex;
+  gap: 20px;
+}
+
+.logososmed img {
+  width: 20px;
+  height: 20px;
+}

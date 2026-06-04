@@ -1,0 +1,193 @@
+body {
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+/*Header*/
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  padding: 12px 18px;
+  background:#ffffff;
+  border-bottom: 1px solid #47474725;
+  margin-right: 5px;
+  position: sticky;
+  top: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #0b1a3a;
+}
+
+.logo {
+  height: 36px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.sub {
+  font-size: 12px;
+}
+
+nav ul {
+  list-style: none; /* menghilangkan titik list */
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+nav ul li a {
+  text-decoration: none; /* untuk menghilangkan garis bawah */
+  color: #000000;
+  font-size: 12px;
+}
+
+.right-section {
+  display: flex;
+  gap: 16px;
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-bahasa {
+  width: 20px;
+  height: 20px;
+  display: flex;
+}
+
+.select {
+  border: 1px solid #e2e6ef;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.account a{
+  text-decoration: none;
+  color: #000000;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;/* agar foto tidak melebar */
+}
+
+
+/*Main*/
+.konten-utama{
+  padding: 20px;
+}
+.jadwal{
+  text-align: center;
+  font-size: 1.3em;
+  background-image: url(https://st.depositphotos.com/17620692/61524/v/450/depositphotos_615240384-stock-illustration-simple-orange-background-flat-geometric.jpg);
+  background-size: cover;
+  margin: 0 50px 20px 50px;
+  padding: 20px;
+  border-radius: 8px;
+  font-family: Poppins, sans-serif;
+  color: #f5f5f5;
+}
+
+.utama{
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    margin: 0px 50px 0 50px;
+}
+
+.card{
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgb(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card a{
+  text-decoration: none;
+  color: #e2561f;
+}
+.card h4{
+    padding: 3px;
+    color: #e2561f;
+}
+.card p{
+  font-size: 0.8em;
+  padding: 3px;
+}
+.card img{
+    width: 12px;
+}
+.status{
+  background: #ff4d00;
+  color: #fff;
+  border-radius: 20px;
+  width: 40px;
+  margin: 10px;
+}
+.status-sudah{
+  background: #15b61a;
+  color: #fff;
+  border-radius: 20px;
+  width: 40px;
+  margin: 10px;
+}
+
+/* Footer*/
+footer {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.textfooter {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.logososmed {
+  display: flex;
+  gap: 20px;
+}
+
+.logososmed img {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width:760px) {
+  .search-wrap {
+    display: none;
+  }
+  .brand span {
+    display: none;
+  }
+}

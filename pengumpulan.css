@@ -1,0 +1,264 @@
+body {
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  padding: 12px 18px;
+  background:#ffffff;
+  border-bottom: 1px solid #47474725;
+  position: sticky;
+  top: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #0b1a3a;
+}
+
+.logo {
+  height: 36px;
+  border-radius: 8px;
+  margin-left: 10px;
+}
+
+.sub {
+  font-size: 12px;
+}
+
+nav ul {
+  list-style: none; /* menghilangkan titik list */
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+nav ul li a {
+  text-decoration: none; /* untuk menghilangkan garis bawah */
+  color: #000000;
+  font-size: 12px;
+}
+
+.right-section {
+  display: flex;
+  gap: 16px;
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-bahasa {
+  width: 20px;
+  height: 20px;
+}
+
+.select {
+  border: 1px solid #e2e6ef;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.account a{
+  text-decoration: none;
+  color: #000000;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover; /* agar foto tidak melebar */
+}
+
+
+/*Main*/
+.konten-utama{
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  margin: 20px;
+}
+.tugas{
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 100px;
+}
+.tugas img{
+    width: 55px;
+    height: 55px;
+    background: #f85a1c;
+    border-radius: 10%;
+    padding: 10px;
+}
+.status{
+  display: flex;
+  gap: 17px;
+  padding-left: 13px;
+}
+.status-abu{
+  color: #ffffff;
+  font-weight: 600;
+  background: #ababab;
+  padding: 8px 15px;
+  border-radius: 100px;
+  font-size: 0.9em;
+}
+.status-hijau{
+  color: #ffffff;
+  font-weight: 600;
+  background: #10cd30;
+  padding: 8px 15px;
+  border-radius: 100px;
+  font-size: 0.9em;
+}
+.main-pengumpulan{
+    display: grid;
+    grid-template-columns: 1fr;
+    background: #c7c3c220;
+    padding: 45px 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 1px solid #ddd;
+}
+.main-pengumpulan p{
+  margin-top: -10px;
+}
+.unggah{
+  margin-top: 45px;
+  margin-bottom: 15px;
+}
+.unggah-file{
+  color: #ffffff;
+  font-weight: 600;
+  background: #c20a0a;
+  padding: 8px 15px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  display: inline-block;
+}
+.pengumpulan{
+  display: flex;
+  gap: 70px;
+  margin-bottom: 55px;
+}
+.file{
+    padding: 0px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 70px;
+    background: #e4e1e1;
+    border-radius: 10px;
+}
+.file img{
+    width: 25px;
+    height: 25px;
+    background: #efb105;
+    border-radius: 10%;
+    padding: 10px;
+}
+.file p{
+  padding-top: 30px;
+}
+.file-document{
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 10px;
+}
+.guru{
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.guru img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.guru p{
+  padding-top: 30px;
+}
+
+
+/* Footer*/
+footer {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.textfooter {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.logososmed {
+  display: flex;
+  gap: 20px;
+}
+
+.logososmed img {
+  width: 20px;
+  height: 20px;
+}
+
+
+/*
+@media (max-width: 768px) {
+    header {
+        flex-direction: row; 
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+        padding: 10px;
+        border-radius: 0; 
+    }
+    nav {
+        display: none;
+    }
+    .brand {
+        justify-content: flex-start;
+    }
+
+    .right-section {
+        width: auto;
+        justify-content: flex-end;
+    }
+    .language .select {
+        display: none; 
+    }
+    .container {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    footer {
+        display: none;
+    }
+}

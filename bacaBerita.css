@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f9fafb;
+    color: #333;
+    line-height: 1.6;
+}
+
+
+
+.navbar{
+    display: flex;
+    padding: 14px 40px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.logo img{
+    width: 28px;
+}
+
+.menu a {
+    margin: 0 12px;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+}
+
+main {
+    max-width: 1100px;
+    margin: 30px auto;
+    display: flex;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.main-content img {
+    margin: 15px 0;
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.main-content p {
+    font-weight: 600;
+}
+
+.sidebar {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.meta {
+    color: #ff8400;
+}
+
+img {
+    width: 1000px;;
+}
+
+footer {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: static;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.textfooter {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.logososmed {
+  display: flex;
+  gap: 20px;
+}
+
+.logososmed img {
+  width: 20px;
+  height: 20px;
+}
