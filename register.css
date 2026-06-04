@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f3f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Menghapus padding-right agar posisi container benar-benar di tengah layar */
+    background-image: url(https://i.pinimg.com/736x/c5/b5/79/c5b579e34febbcaa9a1f270bd9db9306.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(10px);
+}
+
+.container {
+    width: 400px;
+    background: #ffffff1f;
+    padding: 30px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.027);
+    text-align: center;
+}
+
+.logo img {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.logo h2 {
+    color: #000000;
+}
+
+.subtitle {
+    margin-top: 5px;
+    color: #333333;
+    font-size: 14px;
+}
+
+.form-box {
+    text-align: left;
+    margin-top: 20px;
+}
+
+label {
+    font-size: 14px;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 7px 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #ffffff; /* Memastikan input tetap putih bersih */
+}
+
+.forgot {
+    display: block;
+    text-align: right;
+    margin: -10px 0 15px;
+    font-size: 13px;
+    color: #d35400;
+    text-decoration: none;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    background: #c45121;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.atau {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 13px;
+    color: #000000;
+}
+
+.btn-google {
+    width: 100%;
+    padding: 10px;
+    background: #f8f8f8;
+    color: #333333;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-google span {
+    margin-right: 5px;
+}
+
+.register {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.register a {
+    color: #c45121;
+    text-decoration: none;
+}
