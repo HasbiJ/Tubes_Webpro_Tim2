@@ -1,3 +1,27 @@
+<?php
+session_start();
+include "config/koneksi.php";
+
+if(!isset($_SESSION['id_user'])){
+    header("Location: login.php");
+    exit;
+}
+
+$id_user = $_SESSION['id_user'];
+
+$query = mysqli_query($conn,"
+SELECT users.username,
+       siswa.nama,
+       siswa.nisn,
+       siswa.foto
+FROM users
+JOIN siswa ON users.id_user = siswa.id_user
+WHERE users.id_user='$id_user'
+");
+
+$data = mysqli_fetch_assoc($query);
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -34,9 +58,34 @@
         </select>
       </div>
       <div class="account">
-        <a href="profile.html"><img src="foto profile.jpg" alt="Foto Asep" class="avatar"></a>
-        <a href="profile.html"><div>Asep</div></a>
-      </div>
+
+<a href="profile.php">
+
+<?php
+if($data['foto']==""){
+?>
+
+<img src="foto profile.jpg" class="avatar">
+
+<?php
+}else{
+?>
+
+<img src="uploads/<?= $data['foto']; ?>" class="avatar">
+
+<?php
+}
+?>
+
+</a>
+
+<a href="profile.php">
+
+<div><?= $data['nama']; ?></div>
+
+</a>
+
+</div>
     </div>
   </header>
 
@@ -46,9 +95,11 @@
   <aside class="sidebar">
       <div class="profile"> 
         <a href="profile.html"><img src="foto profile.jpg" alt="foto siswa">
-          <h3 >Asep Santoso</h3>
-          <p>NISN: 9876543210</p>
-          <p>Kelas 12, IPA</p>
+          <h3><?= $data['nama']; ?></h3>
+
+<p>NISN : <?= $data['nisn']; ?></p>
+
+<p>Selamat Datang</p>
         </a>
       </div>
   </aside>
@@ -56,7 +107,7 @@
     <!-- MAIN -->
   <main class="main">
     <section class="welcome" style="background-image: url('https://i.pinimg.com/736x/da/cf/5f/dacf5f38f433acfc30499bde1b7f42e0.jpg'); background-size: cover; background-position: center;">
-      <h2>Welcome</h2>
+      <h2>Welcome, <?= $data['nama']; ?></h2>
     </section>
       <div class="content-grid">
         <div class="left">
