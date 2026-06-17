@@ -58,54 +58,39 @@ $data = mysqli_fetch_assoc($query);
         </select>
       </div>
       <div class="account">
-
-<a href="profile.php">
-
-<?php
-if($data['foto']==""){
-?>
-
-<img src="foto profile.jpg" class="avatar">
-
-<?php
-}else{
-?>
-
-<img src="uploads/<?= $data['foto']; ?>" class="avatar">
-
-<?php
-}
-?>
-
-</a>
-
-<a href="profile.php">
-
-<div><?= $data['nama']; ?></div>
-
-</a>
-
-</div>
+        <a href="profile.php">
+          <?php if($data['foto']==""){ ?>
+            <img src="foto profile.jpg" class="avatar">
+          <?php }else{ ?>
+            <img src="uploads/<?= $data['foto']; ?>" class="avatar">
+          <?php } ?>
+        </a>
+        <a href="profile.php">
+          <div><?= $data['nama']; ?></div>
+        </a>
+      </div>
     </div>
   </header>
 
 <div class="container">
   
-    <!-- SIDEBAR -->
-  <aside class="sidebar">
+    <aside class="sidebar">
       <div class="profile"> 
-        <a href="profile.html"><img src="foto profile.jpg" alt="foto siswa">
+        <a href="profile.php">
+          <?php if($data['foto']==""){ ?>
+            <img src="foto profile.jpg" alt="foto siswa">
+          <?php }else{ ?>
+            <img src="uploads/<?= $data['foto']; ?>" alt="foto siswa">
+          <?php } ?>
+          
           <h3><?= $data['nama']; ?></h3>
-
-<p>NISN : <?= $data['nisn']; ?></p>
-
-<p>Selamat Datang</p>
+          <p>NISN : <?= !empty($data['nisn']) ? $data['nisn'] : '-'; ?></p>
+          <p>Selamat Datang</p>
         </a>
       </div>
   </aside>
 
-    <!-- MAIN -->
-  <main class="main">
+    <main class="main">
     <section class="welcome" style="background-image: url('https://i.pinimg.com/736x/da/cf/5f/dacf5f38f433acfc30499bde1b7f42e0.jpg'); background-size: cover; background-position: center;">
       <h2>Welcome, <?= $data['nama']; ?></h2>
     </section>
@@ -168,6 +153,7 @@ if($data['foto']==""){
                       <small>Sejarah</small>
                     </div>
                   </div>
+              </div>
             </section>
         </div>
           <div class="right">
