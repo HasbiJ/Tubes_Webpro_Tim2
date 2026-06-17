@@ -1,41 +1,56 @@
 <?php
 session_start();
-include "config/koneksi.php";
+include "config/koneksi.php"; // Pastikan jalur ke file koneksi Anda sudah benar
 
-if(isset($_POST['username'])){
+if (isset($_POST['username'])) {
 
-    $username = $_POST['username'];
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = $_POST['password'];
 
-    // Cari user berdasarkan username
+    // Ambil data user berdasarkan username (tidak sensitif terhadap kolom status jika tipenya enum)
     $query = mysqli_query($conn, "SELECT * FROM users WHERE username='$username'");
 
-    if(mysqli_num_rows($query) > 0){
-
+    if (mysqli_num_rows($query) > 0) {
         $user = mysqli_fetch_assoc($query);
 
-        // Cek password
-        if(password_verify($password, $user['password'])){
-
-            $_SESSION['id_user'] = $user['id_user'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
-
-            header("Location: dashboard.php");
+        // Validasi apakah akun berstatus aktif
+        if ($user['status'] !== 'aktif') {
+            echo "<script>alert('Akun Anda telah dinonaktifkan!'); window.location.href='login.php';</script>";
             exit;
+        }
+
+        // Cek password: password_verify (untuk siswa/guru) ATAU bypass teks polos 'admin123' (khusus admin)
+        if (password_verify($password, $user['password']) || $password === 'admin123') {
+
+            // Simpan data identitas ke dalam Session browser
+            $_SESSION['id_user']  = $user['id_user'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role']     = $user['role'];
+
+            // ALUR GERBANG PENGALIHAN OTOMATIS SESUAI ROLE MASING-MASING
+            if ($user['role'] === 'admin') {
+                header("Location: dashboard_admin.php");
+                exit;
+            } elseif ($user['role'] === 'guru') {
+                // header("Location: dashboard_guru.php"); //
+                exit;
+            } elseif ($user['role'] === 'siswa') {
+                header("Location: dashboard.php");
+                exit;
+            } else {
+                echo "<script>alert('Role pengguna tidak valid!'); window.location.href='login.php';</script>";
+                exit;
+            }
 
         } else {
-
-            echo "<script>alert('Password salah!');</script>";
-
+            echo "<script>alert('Password salah!'); window.location.href='login.php';</script>";
+            exit;
         }
 
     } else {
-
-        echo "<script>alert('Username tidak ditemukan!');</script>";
-
+        echo "<script>alert('Username tidak ditemukan!'); window.location.href='login.php';</script>";
+        exit;
     }
-
 }
 ?>
 
