@@ -70,7 +70,9 @@ $total_guru  = $data_guru['total_guru'];
       <div class="account">
          <img src="<?= htmlspecialchars($foto_admin); ?>" class="avatar" alt="avatar">
          <div><?= htmlspecialchars($nama_admin); ?></div>
-         <a href="logout.php" style="margin-left: 10px; color: #c45121; text-decoration: none; font-weight: bold;">[Keluar]</a>
+         <a href="logout.php" style="margin-left: 15px; color: #ff6b00; text-decoration: none; font-weight: bold;">
+        Keluar
+     </a>
       </div>
     </div>
   </header>
@@ -82,7 +84,6 @@ $total_guru  = $data_guru['total_guru'];
          <img src="<?= htmlspecialchars($foto_admin); ?>" alt="foto admin">
          <h3><?= htmlspecialchars($nama_admin); ?></h3>
          <p class="role-badge">Administrator</p>
-         <p class="welcome-text">Selamat Datang di panel kendali master EduFlex. Seluruh data disinkronisasikan secara langsung dengan database MySQL.</p>
       </div>
     </aside>
 

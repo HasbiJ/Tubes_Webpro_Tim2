@@ -41,9 +41,9 @@ $data = mysqli_fetch_assoc($query);
     </div>
     <nav>
         <ul>
-            <li><a href="dashboard.html" class="active">Beranda</a></li>
+            <li><a href="dashboard.php" class="active">Beranda</a></li>
             <li><a href="presensi.html">Presensi</a></li>
-            <li><a href="jadwal.html">Jadwal</a></li>
+            <li><a href="jadwal.php">Jadwal</a></li>
             <li><a href="#">AI Helper</a></li>
             <li><a href="tampilanVideo.html">Video</a></li>
             <li><a href="tugas.html">Tugas</a></li>
