@@ -11,7 +11,7 @@ if(!isset($_SESSION['id_user']) || !isset($_GET['id'])){
 $id_user = $_SESSION['id_user'];
 $id_tugas = $_GET['id'];
 
-// Ambil data siswa (id_siswa, nama, foto) berdasarkan id_user dari session login
+// Ambil data siswa berdasarkan id_user dari session login
 $query_user = mysqli_query($conn, "SELECT id_siswa, nama, foto FROM siswa WHERE id_user='$id_user'");
 $data_user = mysqli_fetch_assoc($query_user);
 $id_siswa = $data_user['id_siswa'];
@@ -25,55 +25,9 @@ $query_detail = mysqli_query($conn, "
 ");
 $tugas = mysqli_fetch_assoc($query_detail);
 
-// Cek apakah siswa sudah pernah mengunggah berkas untuk tugas ini (SELECT / READ CRUD)
+// Cek apakah siswa sudah pernah mengunggah berkas untuk tugas ini (Read data saat load awal)
 $query_kumpul = mysqli_query($conn, "SELECT * FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
 $data_kumpul = mysqli_fetch_assoc($query_kumpul);
-
-
-// 2. AKSI CRUD: INPUT (CREATE) & EDIT (UPDATE)
-if(isset($_POST['submit_tugas'])){
-    $nama_file = $_FILES['file_resmi']['name'];
-    $tmp_file = $_FILES['file_resmi']['tmp_name'];
-    
-    if($nama_file != ""){
-        $ekstensi = pathinfo($nama_file, PATHINFO_EXTENSION);
-        // Penamaan file dinamis menggunakan ID tugas dan ID siswa agar unik
-        $nama_file_baru = "Tugas_" . $id_tugas . "_" . $id_siswa . "." . $ekstensi;
-        $folder_tujuan = "uploads_tugas/" . $nama_file_baru;
-        
-        // Buat folder otomatis jika belum ada di server
-        if (!is_dir('uploads_tugas')) {
-            mkdir('uploads_tugas', 0777, true);
-        }
-
-        if(move_uploaded_file($tmp_file, $folder_tujuan)){
-            if($data_kumpul){
-                // Jika berkas sudah ada sebelumnya = EDIT (UPDATE CRUD)
-                mysqli_query($conn, "UPDATE pengumpulan_tugas SET file_tugas='$nama_file_baru', tgl_kumpul=NOW() WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
-            } else {
-                // Jika berkas baru pertama kali dikirim = INPUT (CREATE CRUD)
-                mysqli_query($conn, "INSERT INTO pengumpulan_tugas (id_tugas, id_siswa, file_tugas, tgl_kumpul) VALUES ('$id_tugas', '$id_siswa', '$nama_file_baru', NOW())");
-            }
-            header("Location: pengumpulan.php?id=" . $id_tugas);
-            exit;
-        }
-    }
-}
-
-
-// 3. AKSI CRUD: DELETE (BATALKAN PENGUMPULAN)
-if(isset($_POST['delete_tugas'])){
-    if($data_kumpul){
-        $file_lama = "uploads_tugas/" . $data_kumpul['file_tugas'];
-        if(file_exists($file_lama)){
-            unlink($file_lama); // Hapus file fisik dari folder storage
-        }
-        // Hapus record data dari database = DELETE CRUD
-        mysqli_query($conn, "DELETE FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
-        header("Location: pengumpulan.php?id=" . $id_tugas);
-        exit;
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -143,56 +97,46 @@ if(isset($_POST['delete_tugas'])){
 
         <div class="main-pengumpulan">
           <div class="soal">
-            <p style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 15px;"><?= $tugas['deskripsi']; ?></p>
-            <p style="color: #e74c3c; font-weight: 600;">Jatuh tempo pengerjaan sampai tanggal: <?= date('d F Y', strtotime($tugas['deadline'])); ?></p>
+            <p><?= $tugas['deskripsi']; ?></p>
+            <p style="margin-top: 10px; color: #e74c3c;">Jatuh tempo pengerjaan sampai tanggal: <strong><?= date('d F Y', strtotime($tugas['deadline'])); ?></strong></p>
           </div>
           
           <div class="unggah">
-            <form action="" method="POST" enctype="multipart/form-data" class="form-kumpul-tugas">
+            <form id="formUploadTugas" style="display: flex; flex-direction: column; gap: 15px; max-width: 100%;">
+                <input type="hidden" name="id_tugas" value="<?= $id_tugas; ?>">
                 
                 <label class="unggah-file">
                      <span>Pilih Berkas Tugas Anda</span>
                      <input type="file" name="file_resmi" required class="input-hidden">
                 </label>
                 
-                <button type="submit" name="submit_tugas" class="btn-kirim-hijau">
+                <button type="submit" class="btn-kirim-hijau">
                     <?= $data_kumpul ? 'Perbarui File' : 'Kirim Tugas'; ?>
                 </button>
-                
             </form>
           </div>
 
           <?php if($data_kumpul){ ?>
-              <div class="status-pengumpulan">
-                <p><strong>Status Kelulusan:</strong> <span class="badge-status"><?= $data_kumpul['nilai'] !== null ? 'Telah Dinilai' : 'Menunggu Penilaian'; ?></span></p>
-                <p><strong>Dikumpulkan pada:</strong> <?= date('d-m-Y H:i', strtotime($data_kumpul['tgl_kumpul'])); ?> WIB</p>
-              </div>
-              
-              <div class="pengumpulan">
-                <div class="file-document">
-                  <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">Berkas Tersimpan:</p>
-                  <div class="file">
-                    <img src="folder_ikon.png" alt="ikon">
-                    <p style="margin: 0; padding: 0;"><a href="uploads_tugas/<?= $data_kumpul['file_tugas']; ?>" target="_blank" style="color: #0b1a3a; text-decoration: none; font-weight: 600;"><?= $data_kumpul['file_tugas']; ?></a></p>
+              <div id="infoPengumpulan">
+                  <div class="status-pengumpulan">
+                    <p>Status : <?= $data_kumpul['nilai'] !== null ? 'Telah Dinilai' : 'Menunggu Penilaian'; ?></p>
+                    <p>Dikumpulkan pada : <?= date('d-m-Y H:i', strtotime($data_kumpul['tgl_kumpul'])); ?> WIB</p>
                   </div>
-                </div>
-                
-                <form action="" method="POST" style="align-self: center;">
-                    <button type="submit" name="delete_tugas" onclick="return confirm('Apakah Anda yakin ingin membatalkan pengumpulan tugas ini?')" class="btn-hapus-tugas">
+                  <div class="pengumpulan">
+                    <div class="file-document">
+                      <div class="file">
+                        <img src="folder_ikon.png" alt="ikon">
+                        <p><a href="uploads_tugas/<?= $data_kumpul['file_tugas']; ?>" target="_blank"><?= $data_kumpul['file_tugas']; ?></a></p>
+                      </div>
+                    </div>
+                    
+                    <button type="button" id="btnBatalKumpul" class="btn-hapus-tugas">
                         Batalkan Pengumpulan
                     </button>
-                </form>
-              </div>
-              
-              <div class="nilai-box">
-                <div class="nilai-item">
-                    <span class="nilai-label">Nilai Anda</span>
-                    <span class="nilai-angka"><?= $data_kumpul['nilai'] !== null ? $data_kumpul['nilai'] : '-'; ?><span class="per-seratus">/100</span></span>
-                </div>
-                <div class="komentar-item">
-                    <span class="komentar-label">Komentar Guru:</span>
-                    <p class="komentar-isi">"<?= $data_kumpul['komentar'] !== null ? $data_kumpul['komentar'] : 'Belum ada tanggapan dari guru'; ?> Sweden"</p>
-                </div>
+                  </div>
+                  
+                  <p>Nilai : <?= $data_kumpul['nilai'] !== null ? $data_kumpul['nilai'].'/100' : 'Belum dinilai'; ?></p>
+                  <p>Komentar : <?= $data_kumpul['komentar'] !== null ? $data_kumpul['komentar'] : 'Belum ada tanggapan dari guru'; ?></p>
               </div>
           <?php } ?>
         </div>
@@ -216,5 +160,51 @@ if(isset($_POST['delete_tugas'])){
         </div>
       </div>
     </footer>
+
+    <script>
+    // 1. AJAK / FETCH PROSES UPLOAD & EDIT DATA
+    document.getElementById('formUploadTugas').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let formData = new FormData(this);
+        
+        fetch('api_pengumpulan.php?action=upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            if(data.status === 'success') {
+                location.reload(); // Refresh halaman untuk memperbarui status UI berkas baru
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // 2. AJAX / FETCH PROSES DELETE DATA
+    const btnBatal = document.getElementById('btnBatalKumpul');
+    if(btnBatal) {
+        btnBatal.addEventListener('click', function() {
+            if(confirm('Apakah Anda yakin ingin membatalkan pengumpulan tugas ini?')) {
+                let formData = new FormData();
+                formData.append('id_tugas', '<?= $id_tugas; ?>');
+                
+                fetch('api_pengumpulan.php?action=delete', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    if(data.status === 'success') {
+                        location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    }
+    </script>
 </body>
 </html>

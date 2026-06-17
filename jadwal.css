@@ -1,271 +1,263 @@
+/* Layout Global & Penanganan Sticky Footer */
 body {
-  background: #f5f5f5;
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Header Navbar */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 15px;
-  padding: 12px 18px;
-  background:#ffffff;
-  border-bottom: 1px solid #47474725;
-  margin-right: 5px;
-  position: sticky;
-  top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    padding: 12px 18px;
+    background: #ffffff;
+    border-bottom: 1px solid #47474725;
+    margin-right: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  color: #0b1a3a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #0b1a3a;
 }
 
 .logo {
-  height: 36px;
-  border-radius: 8px;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
+    height: 36px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
 }
 
 .sub {
-  font-size: 12px;
+    font-size: 12px;
 }
 
 nav ul {
-  list-style: none; /* menghilangkan titik list */
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
+    list-style: none; /* Menghilangkan titik list */
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
 }
 
 nav ul li a {
-  text-decoration: none; /* untuk menghilangkan garis bawah */
-  color: #000000;
-  font-size: 12px;
+    text-decoration: none; /* Menghilangkan garis bawah */
+    color: #000000;
+    font-size: 12px;
+}
+
+nav ul li a.active {
+    font-weight: bold;
+    color: #ff4800;
 }
 
 .right-section {
-  display: flex;
-  gap: 16px;
+    display: flex;
+    gap: 16px;
 }
 
 .language {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .logo-bahasa {
-  width: 20px;
-  height: 20px;
-  display: flex;
+    width: 20px;
+    height: 20px;
+    display: flex;
 }
 
 .select { 
-  border: 1px solid #e2e6ef;
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 14px;
+    border: 1px solid #e2e6ef;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 14px;
 }
 
 .account {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
 }
 
-.account a{
-  text-decoration: none;
-  color: #000000;
+.account a {
+    text-decoration: none;
+    color: #000000;
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover; /* agar foto tidak melebar */
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover; /* Agar foto tidak melebar */
 }
 
-
-/*Main*/
-.konten-utama{
-  padding: 20px;
-}
-.jadwal{
-  margin: 40px;
-  font-family: Poppins, sans-serif;
-  color: #ff4800;
-}
-.utama{
-  display: grid;
-  gap: 20px;
-  grid-template-columns:1fr 1fr 1fr;
-  margin: 0 70px 0 70px;
-}
-.card-matwa{
-  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrAQLw9c3Tk0QjX5mEZIczfZIoY4i-1fdWkA&s);
-  background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: left;
-  padding: 15px;
-}
-.card-matwa h4{padding: 3px;}
-.card-matwa p{
-  font-size: 0.8em;
-  padding: 3px;
-  color: #454545;
-}
-.card-matwa img{width: 12px;}
-
-.card-bindo{
-  background-image: url(https://www.shutterstock.com/image-vector/simple-yellow-green-gradation-background-260nw-2522266773.jpg);
-  background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: left;
-  padding: 15px;
-}
-.card-bindo h4{padding: 3px;}
-.card-bindo p{
-  font-size: 0.8em;
-  padding: 3px;
-  color: #454545;
-}
-.card-bindo img{width: 12px;}
-
-.card-senbud{
-  background-image: url(https://i.pinimg.com/736x/6e/c5/0f/6ec50f7d19fcea4f723eea445f8a6e84.jpg);
-  background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: left;
-  padding: 15px;
-}
-.card-senbud h4{padding: 3px;}
-.card-senbud p{
-  font-size: 0.8em;
-  padding: 3px;
-  color: #454545;
-}
-.card-senbud img{width: 12px;}
-
-.card-biologi{
-  background-image: url(https://static.vecteezy.com/system/resources/previews/009/260/928/non_2x/abstract-colorful-background-pink-peach-blue-pastel-skin-light-kids-color-gradiant-illustration-pink-peach-blue-color-gradiant-background-free-vector.jpg);
-  background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: left;
-  padding: 15px;
-}
-.card-biologi h4{padding: 3px;}
-.card-biologi p{
-  font-size: 0.8em;
-  padding: 3px;
-  color: #454545;
-}
-.card-biologi img{width: 12px;}
-
-.card-matmin{
-  background-image: url(https://e0.pxfuel.com/wallpapers/779/17/desktop-wallpaper-pastel-purple-blur-gradation-pink-color-background-full-frame-%E2%80%A2-for-you-for-mobile.jpg);
-  background-size: cover; 
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: left;
-  padding: 15px;
-}
-.card-matmin h4{padding: 3px;}
-.card-matmin p{
-  font-size: 0.8em;
-  padding: 3px;
-  color: #454545;
-}
-.card-matmin img{width: 12px;}
-
-.card-kimia{
-  background-image: url(https://e1.pxfuel.com/desktop-wallpaper/508/207/desktop-wallpaper-374-best-color-gradation-gradation.jpg);
-  background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: left;
-  padding: 15px;
-}
-.card-kimia h4{padding: 3px;}
-.card-kimia p{
-  font-size: 0.8em;
-  padding: 3px;
-  color: #454545;
-}
-.card-kimia img{width: 12px;}
-
-.card-fisika{
-  background-image: url(https://i.pinimg.com/originals/e8/ef/73/e8ef7312f818bc7b486f768657c7fd0b.jpg);
-  background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: left;
-  padding: 15px;
-}
-.card-fisika h4{
-  padding: 3px;
-}
-.card-fisika p{
-  font-size: 0.8em;
-  padding: 3px;
-  color: #454545;
-}
-.card-fisika img{
-  width: 12px;
+/* Konten Utama */
+.konten-utama {
+    padding: 20px;
+    flex: 1; /* Memaksa konten utama melar mengisi sisa layar kosong */
 }
 
+.jadwal {
+    margin: 40px;
+    font-family: Poppins, sans-serif;
+    color: #ff4800;
+}
 
+.utama {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 0 70px 40px 70px;
+}
 
-/* Footer*/
-footer {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+/* Kumpulan Desain Grid Card Jadwal */
+.card-matwa {
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrAQLw9c3Tk0QjX5mEZIczfZIoY4i-1fdWkA&s);
+    background-size: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card-matwa h4 { padding: 3px; margin: 0 0 5px 0; }
+.card-matwa p { font-size: 0.8em; padding: 3px; color: #454545; margin: 0; }
+.card-matwa img { width: 12px; vertical-align: middle; margin-right: 5px; }
+
+.card-bindo {
+    background-image: url(https://www.shutterstock.com/image-vector/simple-yellow-green-gradation-background-260nw-2522266773.jpg);
+    background-size: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card-bindo h4 { padding: 3px; margin: 0 0 5px 0; }
+.card-bindo p { font-size: 0.8em; padding: 3px; color: #454545; margin: 0; }
+.card-bindo img { width: 12px; vertical-align: middle; margin-right: 5px; }
+
+.card-senbud {
+    background-image: url(https://i.pinimg.com/736x/6e/c5/0f/6ec50f7d19fcea4f723eea445f8a6e84.jpg);
+    background-size: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card-senbud h4 { padding: 3px; margin: 0 0 5px 0; }
+.card-senbud p { font-size: 0.8em; padding: 3px; color: #454545; margin: 0; }
+.card-senbud img { width: 12px; vertical-align: middle; margin-right: 5px; }
+
+.card-biologi {
+    background-image: url(https://static.vecteezy.com/system/resources/previews/009/260/928/non_2x/abstract-colorful-background-pink-peach-blue-pastel-skin-light-kids-color-gradiant-illustration-pink-peach-blue-color-gradiant-background-free-vector.jpg);
+    background-size: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card-biologi h4 { padding: 3px; margin: 0 0 5px 0; }
+.card-biologi p { font-size: 0.8em; padding: 3px; color: #454545; margin: 0; }
+.card-biologi img { width: 12px; vertical-align: middle; margin-right: 5px; }
+
+.card-matmin {
+    background-image: url(https://e0.pxfuel.com/wallpapers/779/17/desktop-wallpaper-pastel-purple-blur-gradation-pink-color-background-full-frame-%E2%80%A2-for-you-for-mobile.jpg);
+    background-size: cover; 
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card-matmin h4 { padding: 3px; margin: 0 0 5px 0; }
+.card-matmin p { font-size: 0.8em; padding: 3px; color: #454545; margin: 0; }
+.card-matmin img { width: 12px; vertical-align: middle; margin-right: 5px; }
+
+.card-kimia {
+    background-image: url(https://e1.pxfuel.com/desktop-wallpaper/508/207/desktop-wallpaper-374-best-color-gradation-gradation.jpg);
+    background-size: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card-kimia h4 { padding: 3px; margin: 0 0 5px 0; }
+.card-kimia p { font-size: 0.8em; padding: 3px; color: #454545; margin: 0; }
+.card-kimia img { width: 12px; vertical-align: middle; margin-right: 5px; }
+
+.card-fisika {
+    background-image: url(https://i.pinimg.com/originals/e8/ef/73/e8ef7312f818bc7b486f768657c7fd0b.jpg);
+    background-size: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+    padding: 15px;
+}
+.card-fisika h4 { padding: 3px; margin: 0 0 5px 0; }
+.card-fisika p { font-size: 0.8em; padding: 3px; color: #454545; margin: 0; }
+.card-fisika img { width: 12px; vertical-align: middle; margin-right: 5px; }
+
+/* Footer Bagian Bawah */
+.gridfooter {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: auto; /* Mendorong otomatis footer menetap di posisi paling bawah layar */
 }
 
 .textfooter {
-  display: flex;
-  gap: 20px;
-  font-size: 12px;
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
 }
 
 .logososmed {
-  display: flex;
-  gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 
 .logososmed img {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
-@media (max-width:760px) {
-  .search-wrap {
-    display: none;
-  }
-  .brand span {
-    display: none;
-  }
+/* Responsive Breakpoints */
+@media (max-width: 992px) {
+    .utama {
+        grid-template-columns: 1fr 1fr; /* Berubah jadi 2 kolom di tablet */
+        margin: 0 30px;
+    }
+}
+
+@media (max-width: 760px) {
+    .utama {
+        grid-template-columns: 1fr; /* Berubah jadi 1 kolom full di HP */
+        margin: 0 15px;
+    }
+    .search-wrap,
+    .brand span {
+        display: none;
+    }
 }

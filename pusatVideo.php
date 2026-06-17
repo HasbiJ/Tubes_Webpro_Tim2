@@ -20,12 +20,12 @@
         </div>
         <nav>
             <ul>
-                <li><a href="projekwebsiteuid.html" class="active">Beranda</a></li>
-                <li><a href="#">Presensi</a></li>
-                <li><a href="jadwal.html">Jadwal</a></li>
+                <li><a href="dashboard.php" class="active">Beranda</a></li>
+                <li><a href="presensi.php">Presensi</a></li>
+                <li><a href="jadwal.php">Jadwal</a></li>
                 <li><a href="#">AI Helper</a></li>
-                <li><a href="tampilanVideo.html">Video</a></li>
-                <li><a href="tugas.html">Tugas</a></li>
+                <li><a href="tampilanVideo.php">Video</a></li>
+                <li><a href="tugas.php">Tugas</a></li>
             </ul>
         </nav>
         <section class="right-section">
