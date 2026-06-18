@@ -7,6 +7,7 @@ if(isset($_POST['nama'])){
     $username = $_POST['username'];
     $password = $_POST['password'];
     $konfirmasi = $_POST['konfirmasi'];
+    $role = $_POST['role']; // Mengambil data role yang dipilih (siswa atau guru)
 
     // Cek password
     if($password != $konfirmasi){
@@ -17,31 +18,38 @@ if(isset($_POST['nama'])){
         $cek = mysqli_query($conn,"SELECT * FROM users WHERE username='$username'");
 
         if(mysqli_num_rows($cek) > 0){
-
             echo "<script>alert('Username sudah digunakan');</script>";
-
         }else{
 
             // Enkripsi password
             $password_hash = password_hash($password,PASSWORD_DEFAULT);
 
-            // Simpan ke tabel users
+            // 1. Simpan ke tabel users sesuai dengan role yang dipilih pendaftar
             mysqli_query($conn,"
-            INSERT INTO users(username,password,role)
-            VALUES('$username','$password_hash','siswa')
+                INSERT INTO users(username,password,role,status)
+                VALUES('$username','$password_hash','$role','aktif')
             ");
 
-            // Ambil id user yang baru dibuat
+            // Ambil id user yang baru saja dibuat
             $id_user = mysqli_insert_id($conn);
 
-            // Simpan ke tabel siswa
-            mysqli_query($conn,"
-            INSERT INTO siswa(id_user,nama)
-            VALUES('$id_user','$nama')
-            ");
+            // 2. Pengkondisian cabang penyimpanan berdasarkan kecocokan role
+            if($role == 'guru') {
+                // Jika mendaftar sebagai guru, simpan ke data entitas guru
+                mysqli_query($conn,"
+                    INSERT INTO guru(id_user,nama)
+                    VALUES('$id_user','$nama')
+                ");
+            } else {
+                // Jika mendaftar sebagai siswa, simpan ke data entitas siswa
+                mysqli_query($conn,"
+                    INSERT INTO siswa(id_user,nama)
+                    VALUES('$id_user','$nama')
+                ");
+            }
 
             echo "<script>
-            alert('Registrasi berhasil');
+            alert('Registrasi akun sebagai " . ucfirst($role) . " berhasil!');
             window.location='login.php';
             </script>";
 
@@ -85,6 +93,13 @@ if(isset($_POST['nama'])){
         name="username"
         placeholder="Masukkan email atau nama pengguna Baru"
         required>
+
+        <div>Daftar Sebagai (Role)</div>
+        <select name="role" class="select-role" required>
+            <option value="" disabled selected>-- Pilih Peran Hak Akses --</option>
+            <option value="siswa">Siswa</option>
+            <option value="guru">Guru / Tenaga Pengajar</option>
+        </select>
 
         <div>Kata Sandi</div>
         <input

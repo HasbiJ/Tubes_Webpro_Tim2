@@ -1,0 +1,326 @@
+/* ==========================================================
+   CSS KHUSUS ADMIN PANEL - EDUFLEX INTEGRATED
+   Aman dipisah agar file teman kelompok tidak terganggu.
+   ========================================================== */
+body {
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  overflow-x: hidden;
+}
+
+header {
+  display: flex;
+  width: auto;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  padding: 12px 18px;
+  background:#ffffff;
+  border-bottom: 1px solid #47474725;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin: 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #0b1a3a;
+}
+
+.logo {
+  height: 36px;
+  border-radius: 8px;
+  margin-left: 10px;
+}
+
+.sub {
+  font-size: 12px;
+  color: #666;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav ul li a:hover, nav ul li a.active {
+  color: #ff6b00;
+}
+
+.right-section {
+  display: flex;
+  gap: 16px;
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-bahasa {
+  width: 20px;
+  height: 20px;
+}
+
+.select {
+  border: 1px solid #e2e6ef;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.account a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e6ef;
+}
+
+/* CONTAINER LAYOUT */
+.container {
+  display: flex;
+  height: 100%;
+  min-height: calc(100vh - 140px);
+  padding: 10px;
+  gap: 15px;
+}
+
+/* SIDEBAR STYLING */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  border-right: 1px solid #dddddd;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.profile {
+  text-align: center;
+}
+
+.profile img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ff6b00;
+  margin-bottom: 10px;
+}
+
+.profile h3 {
+  margin: 10px 0 5px 0;
+  font-size: 16px;
+  color: #0b1a3a;
+}
+
+.role-badge {
+  font-size: 11px;
+  background: #ffe6d5;
+  color: #ff6b00;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.welcome-text {
+  font-size: 12px;
+  color: #777;
+  line-height: 1.4;
+}
+
+.profile a {
+  text-decoration: none;
+  color: #000000;
+}
+
+/* MAIN CONTENT */
+.main {
+  padding: 0 10px;
+  width: 100%;
+}
+
+.welcome {
+  height: 160px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome h2 {
+  color: white;
+  font-size: 26px;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e6ef;
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #0b1a3a;
+  border-left: 4px solid #ff6b00;
+  padding-left: 10px;
+}
+
+/* GRID MENU CRUD ACTION */
+.admin-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.action-box {
+  background: #fafbfc;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e2e6ef;
+}
+
+.action-box h3 {
+  margin-top: 0;
+  font-size: 15px;
+  color: #0b1a3a;
+}
+
+.action-box p {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  height: 40px;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #0b1a3a;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #ff6b00;
+}
+
+/* STYLING GRID BARU IKHTISAR DATA MASTER (SUBSTITUSI KEHADIRAN) */
+.stats-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.stat-item-box {
+  background: #fafbfc;
+  border: 1px solid #e2e6ef;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-title {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.stat-number {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0b1a3a;
+}
+
+.berita-item {
+  background: #fafafa;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #e2e6ef;
+}
+
+/* FOOTER */
+footer {
+  background: #ffffff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: auto;
+  border-top: 1px solid #47474715;
+  margin: 10px;
+  border-radius: 12px;
+}
+
+.textfooter {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.logososmed {
+  display: flex;
+  gap: 20px;
+}
+
+.logososmed img {
+  width: 20px;
+  height: 20px;
+}

@@ -1,8 +1,15 @@
-body {
-  background: #f5f5f5;
+/* Pastikan tinggi html dan body mengambil 100% ruang layar browser */
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body {
+  background: #f5f5f5;
   font-family: sans-serif;
+  display: flex;
+  flex-direction: column; /* Mengatur alur komponen vertikal dari atas ke bawah */
 }
 
 /*Header*/
@@ -17,6 +24,7 @@ body {
   margin-right: 5px;
   position: sticky;
   top: 0;
+  z-index: 100;
 }
 
 .brand {
@@ -97,8 +105,9 @@ nav ul li a {
 
 
 /*Main*/
-.konten-utama{
+.konten-utama {
   padding: 20px;
+  flex: 1; /* Mengizinkan area main mengambil sisa ruang kosong dan mendorong footer ke bawah */
 }
 .jadwal{
   text-align: center;
@@ -157,7 +166,7 @@ nav ul li a {
   margin: 10px;
 }
 
-/* Footer*/
+/* Footer */
 footer {
   background: #ffffff;
   border-radius: 10px;
@@ -165,6 +174,7 @@ footer {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: auto; /* Memastikan footer mengunci posisinya di paling dasar layout flex */
 }
 
 .textfooter {
