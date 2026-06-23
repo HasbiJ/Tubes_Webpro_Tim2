@@ -16,20 +16,52 @@ if (!$conn) {
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-/* Preflight */
 if ($method == 'OPTIONS') {
     exit(0);
 }
 
 /* =========================
-   GET -> Ambil data tugas
-   ========================= */
+   GET
+========================= */
 if ($method == 'GET') {
 
+    // dropdown mapel
+    if (isset($_GET['action']) && $_GET['action'] == 'mapel') {
+        $result = mysqli_query($conn, "
+            SELECT id_mapel, nama_mapel
+            FROM mata_pelajaran
+            ORDER BY nama_mapel ASC
+        ");
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "data" => $data
+        ]);
+        exit;
+    }
+
+    // ambil 1 tugas
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
 
-        $query = mysqli_query($conn, "SELECT * FROM tugas WHERE id_tugas='$id'");
+        $query = mysqli_query($conn, "
+            SELECT 
+                tugas.id_tugas,
+                tugas.id_mapel,
+                tugas.judul,
+                tugas.deskripsi,
+                tugas.deadline,
+                mata_pelajaran.nama_mapel
+            FROM tugas
+            JOIN mata_pelajaran ON tugas.id_mapel = mata_pelajaran.id_mapel
+            WHERE tugas.id_tugas = '$id'
+        ");
+
         $data = mysqli_fetch_assoc($query);
 
         if ($data) {
@@ -43,24 +75,37 @@ if ($method == 'GET') {
                 "message" => "Data tugas tidak ditemukan"
             ]);
         }
-    } else {
-        $result = mysqli_query($conn, "SELECT * FROM tugas ORDER BY id_tugas DESC");
-
-        $data = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $data[] = $row;
-        }
-
-        echo json_encode([
-            "status" => "success",
-            "data" => $data
-        ]);
+        exit;
     }
+
+    // ambil semua tugas
+    $result = mysqli_query($conn, "
+        SELECT 
+            tugas.id_tugas,
+            tugas.id_mapel,
+            tugas.judul,
+            tugas.deskripsi,
+            tugas.deadline,
+            mata_pelajaran.nama_mapel
+        FROM tugas
+        JOIN mata_pelajaran ON tugas.id_mapel = mata_pelajaran.id_mapel
+        ORDER BY tugas.id_tugas DESC
+    ");
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $data
+    ]);
 }
 
 /* =========================
-   POST -> Tambah tugas
-   ========================= */
+   POST
+========================= */
 elseif ($method == 'POST') {
 
     $id_mapel  = $_POST['id_mapel'] ?? '';
@@ -89,14 +134,14 @@ elseif ($method == 'POST') {
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Gagal menambahkan tugas"
+            "message" => "Gagal menambahkan tugas: " . mysqli_error($conn)
         ]);
     }
 }
 
 /* =========================
-   PUT -> Update tugas
-   ========================= */
+   PUT
+========================= */
 elseif ($method == 'PUT') {
 
     parse_str(file_get_contents("php://input"), $putData);
@@ -132,14 +177,14 @@ elseif ($method == 'PUT') {
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Gagal mengupdate tugas"
+            "message" => "Gagal mengupdate tugas: " . mysqli_error($conn)
         ]);
     }
 }
 
 /* =========================
-   DELETE -> Hapus tugas
-   ========================= */
+   DELETE
+========================= */
 elseif ($method == 'DELETE') {
 
     parse_str(file_get_contents("php://input"), $deleteData);
@@ -164,14 +209,11 @@ elseif ($method == 'DELETE') {
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Gagal menghapus tugas"
+            "message" => "Gagal menghapus tugas: " . mysqli_error($conn)
         ]);
     }
 }
 
-/* =========================
-   Method tidak dikenali
-   ========================= */
 else {
     echo json_encode([
         "status" => "error",

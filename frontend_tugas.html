@@ -4,84 +4,90 @@
   <meta charset="UTF-8">
   <title>Frontend API Tugas Guru</title>
   <style>
-    body {
+    body{
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
+      background:#f4f4f4;
+      padding:20px;
     }
 
-    .container {
-      width: 90%;
-      margin: auto;
+    .container{
+      width:90%;
+      margin:auto;
     }
 
-    h2 {
-      color: #ff6600;
+    h2{
+      color:#ff6600;
     }
 
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+    form{
+      background:white;
+      padding:20px;
+      border-radius:10px;
+      margin-bottom:20px;
     }
 
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
+    input, select, textarea{
+      width:100%;
+      padding:10px;
+      margin-bottom:10px;
+      box-sizing:border-box;
     }
 
-    textarea {
-      resize: vertical;
+    textarea{
+      resize:vertical;
     }
 
-    button {
-      background: #ff6600;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-right: 5px;
+    button{
+      background:#ff6600;
+      color:white;
+      border:none;
+      padding:10px 15px;
+      cursor:pointer;
+      border-radius:5px;
+      margin-right:5px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:white;
     }
 
-    th {
-      background: #ff6600;
-      color: white;
+    th{
+      background:#ff6600;
+      color:white;
     }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-      vertical-align: top;
+    th, td{
+      border:1px solid #ddd;
+      padding:10px;
+      text-align:center;
+      vertical-align:top;
     }
 
-    .edit-btn {
-      background: green;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-right: 5px;
+    .edit-btn{
+      background:green;
+      color:white;
+      border:none;
+      padding:6px 10px;
+      cursor:pointer;
+      border-radius:5px;
+      margin-right:5px;
     }
 
-    .delete-btn {
-      background: red;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 5px;
+    .delete-btn{
+      background:red;
+      color:white;
+      border:none;
+      padding:6px 10px;
+      cursor:pointer;
+      border-radius:5px;
+    }
+
+    .kosong{
+      color:red;
+      font-weight:bold;
+      margin-bottom:15px;
     }
   </style>
 </head>
@@ -90,11 +96,15 @@
 <div class="container">
   <h2>Frontend Tugas Guru (API PHP)</h2>
 
+  <p id="pesanKosong" class="kosong"></p>
+
   <form id="formTugas">
     <input type="hidden" id="id_tugas">
 
-    <label>ID Mapel</label>
-    <input type="number" id="id_mapel" required>
+    <label>Mata Pelajaran</label>
+    <select id="id_mapel" required>
+      <option value="">-- Pilih Mata Pelajaran --</option>
+    </select>
 
     <label>Judul Tugas</label>
     <input type="text" id="judul" required>
@@ -113,7 +123,7 @@
     <thead>
       <tr>
         <th>ID Tugas</th>
-        <th>ID Mapel</th>
+        <th>Mata Pelajaran</th>
         <th>Judul</th>
         <th>Deskripsi</th>
         <th>Deadline</th>
@@ -139,8 +149,37 @@
   const deadline = document.getElementById("deadline");
   const btnSubmit = document.getElementById("btnSubmit");
   const dataTugas = document.getElementById("dataTugas");
+  const pesanKosong = document.getElementById("pesanKosong");
 
   let modeEdit = false;
+
+  // Ambil dropdown mapel
+  async function loadMapel() {
+    const response = await fetch(apiUrl + "?action=mapel");
+    const result = await response.json();
+
+    idMapel.innerHTML = `<option value="">-- Pilih Mata Pelajaran --</option>`;
+
+    if (result.status === "success") {
+      result.data.forEach(item => {
+        idMapel.innerHTML += `
+          <option value="${item.id_mapel}">
+            ${item.nama_mapel} (ID: ${item.id_mapel})
+          </option>
+        `;
+      });
+    }
+
+    cekDataKosong();
+  }
+
+  function cekDataKosong() {
+    if (idMapel.options.length <= 1) {
+      pesanKosong.textContent = "Data mata pelajaran masih kosong.";
+    } else {
+      pesanKosong.textContent = "";
+    }
+  }
 
   // Ambil semua data
   async function getData() {
@@ -158,12 +197,12 @@
             rows += `
               <tr>
                 <td>${item.id_tugas}</td>
-                <td>${item.id_mapel}</td>
+                <td>${item.nama_mapel}</td>
                 <td>${item.judul}</td>
                 <td>${item.deskripsi}</td>
                 <td>${item.deadline}</td>
                 <td>
-                  <button class="edit-btn" onclick="editData('${item.id_tugas}', '${item.id_mapel}', '${item.judul}', '${item.deskripsi}', '${item.deadline}')">Edit</button>
+                  <button class="edit-btn" onclick="editData('${item.id_tugas}', '${item.id_mapel}', ${JSON.stringify(item.judul)}, ${JSON.stringify(item.deskripsi)}, '${item.deadline}')">Edit</button>
                   <button class="delete-btn" onclick="deleteData('${item.id_tugas}')">Hapus</button>
                 </td>
               </tr>
@@ -185,8 +224,12 @@
   form.addEventListener("submit", async function(e) {
     e.preventDefault();
 
+    if (!idMapel.value || !judul.value || !deskripsi.value || !deadline.value) {
+      alert("Semua field wajib diisi!");
+      return;
+    }
+
     if (!modeEdit) {
-      // TAMBAH DATA
       const formData = new FormData();
       formData.append("id_mapel", idMapel.value);
       formData.append("judul", judul.value);
@@ -204,7 +247,6 @@
       getData();
 
     } else {
-      // UPDATE DATA
       const data = new URLSearchParams();
       data.append("id_tugas", idTugas.value);
       data.append("id_mapel", idMapel.value);
@@ -267,8 +309,13 @@
     btnSubmit.textContent = "Tambah Tugas";
   }
 
-  // Load data saat halaman dibuka
-  getData();
+  // Load awal
+  async function init() {
+    await loadMapel();
+    await getData();
+  }
+
+  init();
 </script>
 
 </body>

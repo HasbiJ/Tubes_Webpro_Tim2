@@ -4,78 +4,84 @@
   <meta charset="UTF-8">
   <title>Frontend API Nilai</title>
   <style>
-    body {
+    body{
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
+      background:#f4f4f4;
+      padding:20px;
     }
 
-    .container {
-      width: 90%;
-      margin: auto;
+    .container{
+      width:90%;
+      margin:auto;
     }
 
-    h2 {
-      color: #ff6600;
+    h2{
+      color:#ff6600;
     }
 
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+    form{
+      background:white;
+      padding:20px;
+      border-radius:10px;
+      margin-bottom:20px;
     }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
+    input, select{
+      width:100%;
+      padding:10px;
+      margin-bottom:10px;
+      box-sizing:border-box;
     }
 
-    button {
-      background: #ff6600;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-right: 5px;
+    button{
+      background:#ff6600;
+      color:white;
+      border:none;
+      padding:10px 15px;
+      cursor:pointer;
+      border-radius:5px;
+      margin-right:5px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:white;
     }
 
-    th {
-      background: #ff6600;
-      color: white;
+    th{
+      background:#ff6600;
+      color:white;
     }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
+    th, td{
+      border:1px solid #ddd;
+      padding:10px;
+      text-align:center;
     }
 
-    .edit-btn {
-      background: green;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 5px;
+    .edit-btn{
+      background:green;
+      color:white;
+      border:none;
+      padding:6px 10px;
+      cursor:pointer;
+      border-radius:5px;
     }
 
-    .delete-btn {
-      background: red;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 5px;
+    .delete-btn{
+      background:red;
+      color:white;
+      border:none;
+      padding:6px 10px;
+      cursor:pointer;
+      border-radius:5px;
+    }
+
+    .kosong{
+      color:red;
+      font-weight:bold;
+      margin-bottom:15px;
     }
   </style>
 </head>
@@ -84,14 +90,20 @@
 <div class="container">
   <h2>Frontend Nilai Siswa (API PHP)</h2>
 
+  <p id="pesanKosong" class="kosong"></p>
+
   <form id="formNilai">
     <input type="hidden" id="id_nilai">
 
-    <label>ID Siswa</label>
-    <input type="number" id="id_siswa" required>
+    <label>Siswa</label>
+    <select id="id_siswa" required>
+      <option value="">-- Pilih Siswa --</option>
+    </select>
 
-    <label>ID Mapel</label>
-    <input type="number" id="id_mapel" required>
+    <label>Mata Pelajaran</label>
+    <select id="id_mapel" required>
+      <option value="">-- Pilih Mata Pelajaran --</option>
+    </select>
 
     <label>Nilai</label>
     <input type="number" id="nilai" step="0.01" min="0" max="100" required>
@@ -104,8 +116,8 @@
     <thead>
       <tr>
         <th>ID Nilai</th>
-        <th>ID Siswa</th>
-        <th>ID Mapel</th>
+        <th>Nama Siswa</th>
+        <th>Mata Pelajaran</th>
         <th>Nilai</th>
         <th>Aksi</th>
       </tr>
@@ -128,10 +140,69 @@
   const nilai = document.getElementById("nilai");
   const btnSubmit = document.getElementById("btnSubmit");
   const dataNilai = document.getElementById("dataNilai");
+  const pesanKosong = document.getElementById("pesanKosong");
 
   let modeEdit = false;
 
-  // Ambil semua data
+  // Ambil dropdown siswa
+  async function loadSiswa() {
+    const response = await fetch(apiUrl + "?action=siswa");
+    const result = await response.json();
+
+    idSiswa.innerHTML = `<option value="">-- Pilih Siswa --</option>`;
+
+    if (result.status === "success") {
+      result.data.forEach(item => {
+        idSiswa.innerHTML += `
+          <option value="${item.id_siswa}">
+            ${item.nama} (ID: ${item.id_siswa})
+          </option>
+        `;
+      });
+    }
+
+    cekDataKosong();
+  }
+
+  // Ambil dropdown mapel
+  async function loadMapel() {
+    const response = await fetch(apiUrl + "?action=mapel");
+    const result = await response.json();
+
+    idMapel.innerHTML = `<option value="">-- Pilih Mata Pelajaran --</option>`;
+
+    if (result.status === "success") {
+      result.data.forEach(item => {
+        idMapel.innerHTML += `
+          <option value="${item.id_mapel}">
+            ${item.nama_mapel} (ID: ${item.id_mapel})
+          </option>
+        `;
+      });
+    }
+
+    cekDataKosong();
+  }
+
+  // Cek kalau siswa/mapel kosong
+  function cekDataKosong() {
+    const jumlahSiswa = idSiswa.options.length;
+    const jumlahMapel = idMapel.options.length;
+
+    let pesan = "";
+
+    if (jumlahSiswa <= 1) {
+      pesan += "Data siswa masih kosong. ";
+    }
+
+    if (jumlahMapel <= 1) {
+      pesan += "Data mata pelajaran masih kosong.";
+    }
+
+    pesanKosong.textContent = pesan;
+  }
+
+  // Ambil semua data nilai
   async function getData() {
     try {
       const response = await fetch(apiUrl);
@@ -141,18 +212,18 @@
         let rows = "";
 
         if (result.data.length === 0) {
-          rows = `<tr><td colspan="5">Belum ada data</td></tr>`;
+          rows = `<tr><td colspan="5">Belum ada data nilai</td></tr>`;
         } else {
           result.data.forEach(item => {
             rows += `
               <tr>
                 <td>${item.id_nilai}</td>
-                <td>${item.id_siswa}</td>
-                <td>${item.id_mapel}</td>
+                <td>${item.nama_siswa}</td>
+                <td>${item.nama_mapel}</td>
                 <td>${item.nilai}</td>
                 <td>
-                  <button class="edit-btn" onclick="editData(${item.id_nilai}, ${item.id_siswa}, ${item.id_mapel}, ${item.nilai})">Edit</button>
-                  <button class="delete-btn" onclick="deleteData(${item.id_nilai})">Hapus</button>
+                  <button class="edit-btn" onclick="editData('${item.id_nilai}', '${item.id_siswa}', '${item.id_mapel}', '${item.nilai}')">Edit</button>
+                  <button class="delete-btn" onclick="deleteData('${item.id_nilai}')">Hapus</button>
                 </td>
               </tr>
             `;
@@ -172,6 +243,11 @@
   // Tambah / update data
   form.addEventListener("submit", async function(e) {
     e.preventDefault();
+
+    if (!idSiswa.value || !idMapel.value || !nilai.value) {
+      alert("Semua field wajib diisi!");
+      return;
+    }
 
     if (!modeEdit) {
       // TAMBAH DATA
@@ -252,8 +328,14 @@
     btnSubmit.textContent = "Tambah Nilai";
   }
 
-  // Load data saat halaman dibuka
-  getData();
+  // Load awal
+  async function init() {
+    await loadSiswa();
+    await loadMapel();
+    await getData();
+  }
+
+  init();
 </script>
 
 </body>
