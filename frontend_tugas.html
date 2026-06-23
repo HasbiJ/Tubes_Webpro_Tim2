@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Frontend API Tugas Guru</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+    }
+
+    h2 {
+      color: #ff6600;
+    }
+
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      background: #ff6600;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-right: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th {
+      background: #ff6600;
+      color: white;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      vertical-align: top;
+    }
+
+    .edit-btn {
+      background: green;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-right: 5px;
+    }
+
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Frontend Tugas Guru (API PHP)</h2>
+
+  <form id="formTugas">
+    <input type="hidden" id="id_tugas">
+
+    <label>ID Mapel</label>
+    <input type="number" id="id_mapel" required>
+
+    <label>Judul Tugas</label>
+    <input type="text" id="judul" required>
+
+    <label>Deskripsi</label>
+    <textarea id="deskripsi" rows="4" required></textarea>
+
+    <label>Deadline</label>
+    <input type="date" id="deadline" required>
+
+    <button type="submit" id="btnSubmit">Tambah Tugas</button>
+    <button type="button" onclick="resetForm()">Reset</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID Tugas</th>
+        <th>ID Mapel</th>
+        <th>Judul</th>
+        <th>Deskripsi</th>
+        <th>Deadline</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="dataTugas">
+      <tr>
+        <td colspan="6">Loading...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const apiUrl = "http://localhost/Tubes_Webpro_Tim2/api_tugas.php";
+
+  const form = document.getElementById("formTugas");
+  const idTugas = document.getElementById("id_tugas");
+  const idMapel = document.getElementById("id_mapel");
+  const judul = document.getElementById("judul");
+  const deskripsi = document.getElementById("deskripsi");
+  const deadline = document.getElementById("deadline");
+  const btnSubmit = document.getElementById("btnSubmit");
+  const dataTugas = document.getElementById("dataTugas");
+
+  let modeEdit = false;
+
+  // Ambil semua data
+  async function getData() {
+    try {
+      const response = await fetch(apiUrl);
+      const result = await response.json();
+
+      if (result.status === "success") {
+        let rows = "";
+
+        if (result.data.length === 0) {
+          rows = `<tr><td colspan="6">Belum ada data tugas</td></tr>`;
+        } else {
+          result.data.forEach(item => {
+            rows += `
+              <tr>
+                <td>${item.id_tugas}</td>
+                <td>${item.id_mapel}</td>
+                <td>${item.judul}</td>
+                <td>${item.deskripsi}</td>
+                <td>${item.deadline}</td>
+                <td>
+                  <button class="edit-btn" onclick="editData('${item.id_tugas}', '${item.id_mapel}', '${item.judul}', '${item.deskripsi}', '${item.deadline}')">Edit</button>
+                  <button class="delete-btn" onclick="deleteData('${item.id_tugas}')">Hapus</button>
+                </td>
+              </tr>
+            `;
+          });
+        }
+
+        dataTugas.innerHTML = rows;
+      } else {
+        dataTugas.innerHTML = `<tr><td colspan="6">Gagal memuat data</td></tr>`;
+      }
+    } catch (error) {
+      dataTugas.innerHTML = `<tr><td colspan="6">Terjadi error</td></tr>`;
+      console.error(error);
+    }
+  }
+
+  // Tambah / update data
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    if (!modeEdit) {
+      // TAMBAH DATA
+      const formData = new FormData();
+      formData.append("id_mapel", idMapel.value);
+      formData.append("judul", judul.value);
+      formData.append("deskripsi", deskripsi.value);
+      formData.append("deadline", deadline.value);
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+      alert(result.message);
+      resetForm();
+      getData();
+
+    } else {
+      // UPDATE DATA
+      const data = new URLSearchParams();
+      data.append("id_tugas", idTugas.value);
+      data.append("id_mapel", idMapel.value);
+      data.append("judul", judul.value);
+      data.append("deskripsi", deskripsi.value);
+      data.append("deadline", deadline.value);
+
+      const response = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data
+      });
+
+      const result = await response.json();
+      alert(result.message);
+      resetForm();
+      getData();
+    }
+  });
+
+  // Isi form untuk edit
+  function editData(id, mapel, judulData, deskripsiData, deadlineData) {
+    modeEdit = true;
+    idTugas.value = id;
+    idMapel.value = mapel;
+    judul.value = judulData;
+    deskripsi.value = deskripsiData;
+    deadline.value = deadlineData;
+    btnSubmit.textContent = "Update Tugas";
+  }
+
+  // Hapus data
+  async function deleteData(id) {
+    const konfirmasi = confirm("Yakin ingin menghapus tugas?");
+    if (!konfirmasi) return;
+
+    const data = new URLSearchParams();
+    data.append("id_tugas", id);
+
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data
+    });
+
+    const result = await response.json();
+    alert(result.message);
+    getData();
+  }
+
+  // Reset form
+  function resetForm() {
+    modeEdit = false;
+    form.reset();
+    idTugas.value = "";
+    btnSubmit.textContent = "Tambah Tugas";
+  }
+
+  // Load data saat halaman dibuka
+  getData();
+</script>
+
+</body>
+</html>
