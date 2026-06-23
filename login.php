@@ -29,7 +29,7 @@ if (isset($_POST['username'])) {
 
             // ALUR GERBANG PENGALIHAN OTOMATIS SESUAI ROLE MASING-MASING
             if ($user['role'] === 'admin') {
-                header("Location: dashboard_admin.php");
+                header("Location: ../Tubes_Webpro_Tim2/admin/dashboard_admin.php");
                 exit;
             } elseif ($user['role'] === 'guru') {
                 // header("Location: dashboard_guru.php"); //

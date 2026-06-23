@@ -150,7 +150,7 @@ if (isset($_POST['submit'])) {
 
             <h2>Tambah Jadwal Baru</h2>
 
-            <form action="" method="POST">
+            <form action="" id="formTambahJadwal" method="POST">
 
                 <div class="form-group">
                     <label>Kelas</label>
@@ -246,6 +246,6 @@ if (isset($_POST['submit'])) {
       </div>
     </div>
   </footer>
-
+<script src="jadwal.js"></script>
 </body>
 </html>
