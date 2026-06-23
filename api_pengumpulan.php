@@ -14,18 +14,49 @@ $query_user = mysqli_query($conn, "SELECT id_siswa FROM siswa WHERE id_user='$id
 $data_user = mysqli_fetch_assoc($query_user);
 $id_siswa = $data_user['id_siswa'];
 
-$action = $_GET['action'] ?? '';
+// MENGAMBIL METHOD REQUEST (GET / POST)
+$method = $_SERVER['REQUEST_METHOD'];
 
-// ==========================================
-// 1. ENDPOINT: CREATE / UPDATE CRUD (POST)
-// ==========================================
-if($action == 'upload' && $_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_tugas = $_POST['id_tugas'];
-    $nama_file = $_FILES['file_resmi']['name'];
-    $tmp_file = $_FILES['file_resmi']['tmp_name'];
+// ====================================================================
+// 1. METHOD GET: UNTUK SELECT/READ DATA (Membaca Status Tugas)
+// ====================================================================
+if ($method == 'GET') {
+    $id_tugas = $_GET['id_tugas'] ?? '';
     
-    if($nama_file == "") {
-        echo json_encode(['status' => 'error', 'message' => 'Tidak ada file yang dipilih']);
+    if($id_tugas == "") {
+        echo json_encode(['status' => 'error', 'message' => 'ID Tugas tidak disertakan']);
+        exit;
+    }
+    
+    // Query SELECT CRUD
+    $cek = mysqli_query($conn, "SELECT file_tugas, tgl_kumpul FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
+    
+    if(mysqli_num_rows($cek) > 0){
+        $data = mysqli_fetch_assoc($cek);
+        echo json_encode([
+            'status' => 'success', 
+            'sudah_kumpul' => true, 
+            'data' => $data
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'success', 
+            'sudah_kumpul' => false
+        ]);
+    }
+    exit;
+}
+
+// ====================================================================
+// 2. METHOD POST: UNTUK CREATE DATA (Mengunggah Tugas)
+// ====================================================================
+if ($method == 'POST') {
+    $id_tugas = $_POST['id_tugas'] ?? '';
+    $nama_file = $_FILES['file_resmi']['name'] ?? '';
+    $tmp_file = $_FILES['file_resmi']['tmp_name'] ?? '';
+    
+    if($id_tugas == "" || $nama_file == "") {
+        echo json_encode(['status' => 'error', 'message' => 'Data input tugas atau berkas tidak lengkap']);
         exit;
     }
     
@@ -42,11 +73,11 @@ if($action == 'upload' && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $cek = mysqli_query($conn, "SELECT * FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
         
         if(mysqli_num_rows($cek) > 0){
-            // Jika sudah ada = UPDATE CRUD
+            // UPDATE CRUD
             $query = mysqli_query($conn, "UPDATE pengumpulan_tugas SET file_tugas='$nama_file_baru', tgl_kumpul=NOW() WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
             $msg = "Berkas tugas berhasil diperbarui!";
         } else {
-            // Jika belum ada = CREATE CRUD
+            // CREATE CRUD
             $query = mysqli_query($conn, "INSERT INTO pengumpulan_tugas (id_tugas, id_siswa, file_tugas, tgl_kumpul) VALUES ('$id_tugas', '$id_siswa', '$nama_file_baru', NOW())");
             $msg = "Tugas berhasil dikirim!";
         }
@@ -58,35 +89,6 @@ if($action == 'upload' && $_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Gagal mengunggah berkas ke server']);
-    }
-    exit;
-}
-
-// ==========================================
-// 2. ENDPOINT: DELETE CRUD (POST)
-// ==========================================
-if($action == 'delete' && $_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_tugas = $_POST['id_tugas'];
-    
-    $cek = mysqli_query($conn, "SELECT * FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
-    $data_kumpul = mysqli_fetch_assoc($cek);
-    
-    if($data_kumpul){
-        $file_lama = "uploads_tugas/" . $data_kumpul['file_tugas'];
-        if(file_exists($file_lama)){
-            unlink($file_lama); // Hapus file fisik dari folder storage
-        }
-        
-        // Hapus record di database = DELETE CRUD
-        $query = mysqli_query($conn, "DELETE FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
-        
-        if($query) {
-            echo json_encode(['status' => 'success', 'message' => 'Pengumpulan tugas berhasil dibatalkan!']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus data dari database']);
-        }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Data pengumpulan tidak ditemukan']);
     }
     exit;
 }

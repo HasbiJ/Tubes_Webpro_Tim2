@@ -90,15 +90,24 @@ $id_siswa = $data_user['id_siswa'];
             // Cek status pengumpulan siswa
             $cek_kumpul = mysqli_query($conn, "SELECT * FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
             $sudah_kumpul = mysqli_num_rows($cek_kumpul) > 0;
+
+            // DETEKSI ABSOLUT MENGGUNAKAN KATA KUNCI JUDUL (Mengantisipasi bug tipe data ID)
+            if (stripos($tugas['judul'], 'Quiz') !== false || stripos($tugas['judul'], 'Kuis') !== false || $id_tugas == 5) {
+                $link_tujuan = "quiz.html";
+            } else {
+                $link_tujuan = "pengumpulan.php?id=" . $id_tugas;
+            }
         ?>
             <div class="card">
-                <!-- Nama Mata Pelajaran Sekarang Muncul di Sini -->
                 <h3 style="margin: 0 0 10px 0; color: #b3541e; font-size: 18px;"><?= $tugas['nama_mapel']; ?></h3>
                 
-                <!-- LINK dipindahkan ke Judul Tugas agar mudah diklik -->
                 <p style="font-size: 16px; margin: 5px 0;">
                     <img src="materi.png" alt="materi"> 
-                    <strong><a href="pengumpulan.php?id=<?= $id_tugas; ?>" style="text-decoration: none; color: #0b1a3a;"><?= $tugas['judul']; ?></a></strong>
+                    <strong>
+                        <a href="<?php echo $link_tujuan; ?>">
+                            <?= $tugas['judul']; ?>
+                        </a>
+                    </strong>
                 </p>
                 
                 <p style="margin: 8px 0; color: #555;"><?= $tugas['deskripsi']; ?></p>
