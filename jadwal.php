@@ -2,7 +2,7 @@
 session_start();
 include "config/koneksi.php";
 
-// 1. Proteksi Akun Siswa
+// Proteksi Akun
 if(!isset($_SESSION['id_user'])){
     header("Location: login.php");
     exit;
@@ -10,19 +10,16 @@ if(!isset($_SESSION['id_user'])){
 
 $id_user = $_SESSION['id_user'];
 
-// 2. Ambil data siswa + id_kelas miliknya yang sedang aktif login
-$query_user = mysqli_query($conn, "SELECT nama, foto, id_kelas FROM siswa WHERE id_user='$id_user'");
+// 1. Ambil data siswa yang login
+$query_user = mysqli_query($conn, "SELECT nama, foto FROM siswa WHERE id_user='$id_user'");
 $data_user  = mysqli_fetch_assoc($query_user);
-$id_kelas_siswa = $data_user['id_kelas']; 
 
-// 3. Query READ: Ambil jadwal yang id_kelas-nya HANYA COCOK dengan kelas siswa saat ini
-// Menggunakan INNER JOIN ke tabel 'mata_pelajaran' (disamakan dengan tabel milik Admin)
+// 2. Query READ yang sudah disesuaikan tanpa filter id_kelas (Menampilkan semua jadwal)
 $query_jadwal = mysqli_query($conn, "
-    SELECT j.*, m.nama_mapel
-    FROM jadwal j
-    INNER JOIN mata_pelajaran m ON j.id_mapel = m.id_mapel
-    WHERE j.id_kelas = '$id_kelas_siswa'
-    ORDER BY FIELD(j.hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'), j.jam_mulai ASC
+    SELECT jadwal.*, mata_pelajaran.nama_mapel 
+    FROM jadwal 
+    LEFT JOIN mata_pelajaran ON jadwal.id_mapel = mata_pelajaran.id_mapel
+    ORDER BY FIELD(jadwal.hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jadwal.jam_mulai ASC
 ");
 ?>
 
