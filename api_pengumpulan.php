@@ -16,6 +16,7 @@ $id_siswa = $data_user['id_siswa'];
 
 // MENGAMBIL METHOD REQUEST (GET / POST)
 $method = $_SERVER['REQUEST_METHOD'];
+$action = $_GET['action'] ?? '';
 
 // ====================================================================
 // 1. METHOD GET: UNTUK SELECT/READ DATA (Membaca Status Tugas)
@@ -48,14 +49,54 @@ if ($method == 'GET') {
 }
 
 // ====================================================================
-// 2. METHOD POST: UNTUK CREATE DATA (Mengunggah Tugas)
+// 2. METHOD POST: UNTUK CREATE, UPDATE, & DELETE DATA
 // ====================================================================
 if ($method == 'POST') {
     $id_tugas = $_POST['id_tugas'] ?? '';
+    
+    if($id_tugas == "") {
+        echo json_encode(['status' => 'error', 'message' => 'ID Tugas tidak disertakan']);
+        exit;
+    }
+
+    // ----------------================================================
+    // LOGIKA BARU: JIKA ACTION ADALAH DELETE (Membatalakan Tugas)
+    // ----------------================================================
+    if ($action == 'delete') {
+        // Ambil nama file lama terlebih dahulu untuk dihapus dari folder server
+        $cek_file = mysqli_query($conn, "SELECT file_tugas FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
+        
+        if (mysqli_num_rows($cek_file) > 0) {
+            $data_file = mysqli_fetch_assoc($cek_file);
+            $nama_file_lama = $data_file['file_tugas'];
+            $path_file = "uploads_tugas/" . $nama_file_lama;
+            
+            // Hapus file fisik dari folder uploads_tugas jika filenya ada
+            if (file_exists($path_file) && !empty($nama_file_lama)) {
+                unlink($path_file);
+            }
+            
+            // Hapus data dari database (DELETE CRUD)
+            $query_delete = mysqli_query($conn, "DELETE FROM pengumpulan_tugas WHERE id_tugas='$id_tugas' AND id_siswa='$id_siswa'");
+            
+            if ($query_delete) {
+                echo json_encode(['status' => 'success', 'message' => 'Pengumpulan tugas berhasil dibatalkan dan berkas dihapus!']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus data pengumpulan dari database']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Data pengumpulan tugas tidak ditemukan']);
+        }
+        exit;
+    }
+
+    // ----------------================================================
+    // LOGIKA UPLOAD / UPDATE FILE (LOGIKA ASLI KAMU)
+    // ----------------================================================
     $nama_file = $_FILES['file_resmi']['name'] ?? '';
     $tmp_file = $_FILES['file_resmi']['tmp_name'] ?? '';
     
-    if($id_tugas == "" || $nama_file == "") {
+    if($nama_file == "") {
         echo json_encode(['status' => 'error', 'message' => 'Data input tugas atau berkas tidak lengkap']);
         exit;
     }
@@ -92,3 +133,4 @@ if ($method == 'POST') {
     }
     exit;
 }
+?>

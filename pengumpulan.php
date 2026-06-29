@@ -126,14 +126,9 @@ $sudah_kumpul = mysqli_num_rows($query_kumpul) > 0;
                     <div style="display:flex; align-items:center; justify-content:space-between; background:#fff; padding:12px; border-radius:6px; border:1px solid #dee2e6;">
                         <span style="font-weight:600; color:#0b1a3a;">📄 <?= $data_kumpul['file_tugas']; ?></span>
                         
-                        <form action="api_pengumpulan.php?action=delete" method="POST" style="margin: 0;" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pengumpulan tugas ini?')">
-                            <input type="hidden" name="id_tugas" value="<?= $id_tugas; ?>">
-                            <input type="hidden" name="redirect_url" value="pengumpulan.php?id=<?= $id_tugas; ?>">
-                            
-                            <button type="submit" style="background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px;">
-                                Batalkan Pengumpulan
-                            </button>
-                        </form>
+                        <button type="button" onclick="batalPengumpulan('<?= $id_tugas; ?>')" style="background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                            Batalkan Pengumpulan
+                        </button>
                     </div>
                 </div>
             <?php } ?>
@@ -154,24 +149,20 @@ $sudah_kumpul = mysqli_num_rows($query_kumpul) > 0;
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.text()) // Ambil teks mentah dulu untuk membuang zzz
+            .then(response => response.text())
             .then(text => {
-                // Trik Potong paksa zzz/ZZZ yang bocor dari file include
                 const jsonClean = text.replace(/^zzz+/i, '').trim();
-                
-                // Parse manual teks yang sudah steril ke JSON objek
                 const data = JSON.parse(jsonClean);
                 
                 if(data.status === 'success') {
-                    alert(data.message); // Pop-up sukses dijamin muncul!
-                    window.location.reload(); // Otomatis refresh halaman!
+                    alert(data.message);
+                    window.location.reload();
                 } else {
                     alert('Gagal: ' + data.message);
                 }
             })
             .catch(error => {
                 console.error('Parsing Error:', error);
-                // Jalur alternatif darurat: kalau parsing gagal, langsung reload agar status tetap ter-update
                 window.location.reload();
             });
         });
@@ -187,14 +178,14 @@ $sudah_kumpul = mysqli_num_rows($query_kumpul) > 0;
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.text()) // Ambil teks mentah dulu
+            .then(response => response.text())
             .then(text => {
                 const jsonClean = text.replace(/^zzz+/i, '').trim();
                 const data = JSON.parse(jsonClean);
                 
                 if(data.status === 'success') {
-                    alert(data.message); // Pop-up sukses pembatalan muncul!
-                    window.location.reload(); // Otomatis refresh!
+                    alert(data.message);
+                    window.location.reload();
                 } else {
                     alert('Gagal: ' + data.message);
                 }
