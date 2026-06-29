@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Frontend API Nilai</title>
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f4f4f4;
+      padding:20px;
+    }
+
+    .container{
+      width:90%;
+      margin:auto;
+    }
+
+    h2{
+      color:#ff6600;
+    }
+
+    form{
+      background:white;
+      padding:20px;
+      border-radius:10px;
+      margin-bottom:20px;
+    }
+
+    input, select{
+      width:100%;
+      padding:10px;
+      margin-bottom:10px;
+      box-sizing:border-box;
+    }
+
+    button{
+      background:#ff6600;
+      color:white;
+      border:none;
+      padding:10px 15px;
+      cursor:pointer;
+      border-radius:5px;
+      margin-right:5px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:white;
+    }
+
+    th{
+      background:#ff6600;
+      color:white;
+    }
+
+    th, td{
+      border:1px solid #ddd;
+      padding:10px;
+      text-align:center;
+    }
+
+    .edit-btn{
+      background:green;
+      color:white;
+      border:none;
+      padding:6px 10px;
+      cursor:pointer;
+      border-radius:5px;
+    }
+
+    .delete-btn{
+      background:red;
+      color:white;
+      border:none;
+      padding:6px 10px;
+      cursor:pointer;
+      border-radius:5px;
+    }
+
+    .kosong{
+      color:red;
+      font-weight:bold;
+      margin-bottom:15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Frontend Nilai Siswa (API PHP)</h2>
+
+  <p id="pesanKosong" class="kosong"></p>
+
+  <form id="formNilai">
+    <input type="hidden" id="id_nilai">
+
+    <label>Siswa</label>
+    <select id="id_siswa" required>
+      <option value="">-- Pilih Siswa --</option>
+    </select>
+
+    <label>Mata Pelajaran</label>
+    <select id="id_mapel" required>
+      <option value="">-- Pilih Mata Pelajaran --</option>
+    </select>
+
+    <label>Nilai</label>
+    <input type="number" id="nilai" step="0.01" min="0" max="100" required>
+
+    <button type="submit" id="btnSubmit">Tambah Nilai</button>
+    <button type="button" onclick="resetForm()">Reset</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID Nilai</th>
+        <th>Nama Siswa</th>
+        <th>Mata Pelajaran</th>
+        <th>Nilai</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="dataNilai">
+      <tr>
+        <td colspan="5">Loading...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const apiUrl = "http://localhost/Tubes_Webpro_Tim2/api_nilai.php";
+
+  const form = document.getElementById("formNilai");
+  const idNilai = document.getElementById("id_nilai");
+  const idSiswa = document.getElementById("id_siswa");
+  const idMapel = document.getElementById("id_mapel");
+  const nilai = document.getElementById("nilai");
+  const btnSubmit = document.getElementById("btnSubmit");
+  const dataNilai = document.getElementById("dataNilai");
+  const pesanKosong = document.getElementById("pesanKosong");
+
+  let modeEdit = false;
+
+  // Ambil dropdown siswa
+  async function loadSiswa() {
+    const response = await fetch(apiUrl + "?action=siswa");
+    const result = await response.json();
+
+    idSiswa.innerHTML = `<option value="">-- Pilih Siswa --</option>`;
+
+    if (result.status === "success") {
+      result.data.forEach(item => {
+        idSiswa.innerHTML += `
+          <option value="${item.id_siswa}">
+            ${item.nama} (ID: ${item.id_siswa})
+          </option>
+        `;
+      });
+    }
+
+    cekDataKosong();
+  }
+
+  // Ambil dropdown mapel
+  async function loadMapel() {
+    const response = await fetch(apiUrl + "?action=mapel");
+    const result = await response.json();
+
+    idMapel.innerHTML = `<option value="">-- Pilih Mata Pelajaran --</option>`;
+
+    if (result.status === "success") {
+      result.data.forEach(item => {
+        idMapel.innerHTML += `
+          <option value="${item.id_mapel}">
+            ${item.nama_mapel} (ID: ${item.id_mapel})
+          </option>
+        `;
+      });
+    }
+
+    cekDataKosong();
+  }
+
+  // Cek kalau siswa/mapel kosong
+  function cekDataKosong() {
+    const jumlahSiswa = idSiswa.options.length;
+    const jumlahMapel = idMapel.options.length;
+
+    let pesan = "";
+
+    if (jumlahSiswa <= 1) {
+      pesan += "Data siswa masih kosong. ";
+    }
+
+    if (jumlahMapel <= 1) {
+      pesan += "Data mata pelajaran masih kosong.";
+    }
+
+    pesanKosong.textContent = pesan;
+  }
+
+  // Ambil semua data nilai
+  async function getData() {
+    try {
+      const response = await fetch(apiUrl);
+      const result = await response.json();
+
+      if (result.status === "success") {
+        let rows = "";
+
+        if (result.data.length === 0) {
+          rows = `<tr><td colspan="5">Belum ada data nilai</td></tr>`;
+        } else {
+          result.data.forEach(item => {
+            rows += `
+              <tr>
+                <td>${item.id_nilai}</td>
+                <td>${item.nama_siswa}</td>
+                <td>${item.nama_mapel}</td>
+                <td>${item.nilai}</td>
+                <td>
+                  <button class="edit-btn" onclick="editData('${item.id_nilai}', '${item.id_siswa}', '${item.id_mapel}', '${item.nilai}')">Edit</button>
+                  <button class="delete-btn" onclick="deleteData('${item.id_nilai}')">Hapus</button>
+                </td>
+              </tr>
+            `;
+          });
+        }
+
+        dataNilai.innerHTML = rows;
+      } else {
+        dataNilai.innerHTML = `<tr><td colspan="5">Gagal memuat data</td></tr>`;
+      }
+    } catch (error) {
+      dataNilai.innerHTML = `<tr><td colspan="5">Terjadi error</td></tr>`;
+      console.error(error);
+    }
+  }
+
+  // Tambah / update data
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    if (!idSiswa.value || !idMapel.value || !nilai.value) {
+      alert("Semua field wajib diisi!");
+      return;
+    }
+
+    if (!modeEdit) {
+      // TAMBAH DATA
+      const formData = new FormData();
+      formData.append("id_siswa", idSiswa.value);
+      formData.append("id_mapel", idMapel.value);
+      formData.append("nilai", nilai.value);
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+      alert(result.message);
+      resetForm();
+      getData();
+
+    } else {
+      // UPDATE DATA
+      const data = new URLSearchParams();
+      data.append("id_nilai", idNilai.value);
+      data.append("id_siswa", idSiswa.value);
+      data.append("id_mapel", idMapel.value);
+      data.append("nilai", nilai.value);
+
+      const response = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data
+      });
+
+      const result = await response.json();
+      alert(result.message);
+      resetForm();
+      getData();
+    }
+  });
+
+  // Isi form untuk edit
+  function editData(id, siswa, mapel, nilaiData) {
+    modeEdit = true;
+    idNilai.value = id;
+    idSiswa.value = siswa;
+    idMapel.value = mapel;
+    nilai.value = nilaiData;
+    btnSubmit.textContent = "Update Nilai";
+  }
+
+  // Hapus data
+  async function deleteData(id) {
+    const konfirmasi = confirm("Yakin ingin menghapus data?");
+    if (!konfirmasi) return;
+
+    const data = new URLSearchParams();
+    data.append("id_nilai", id);
+
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data
+    });
+
+    const result = await response.json();
+    alert(result.message);
+    getData();
+  }
+
+  // Reset form
+  function resetForm() {
+    modeEdit = false;
+    form.reset();
+    idNilai.value = "";
+    btnSubmit.textContent = "Tambah Nilai";
+  }
+
+  // Load awal
+  async function init() {
+    await loadSiswa();
+    await loadMapel();
+    await getData();
+  }
+
+  init();
+</script>
+
+</body>
+</html>

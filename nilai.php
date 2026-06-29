@@ -11,22 +11,21 @@ if(!$conn){
 ========================= */
 if(isset($_POST['tambah'])){
 
-    $id_mapel  = $_POST['id_mapel'];
-    $judul     = $_POST['judul'];
-    $deskripsi = $_POST['deskripsi'];
-    $deadline  = $_POST['deadline'];
+    $id_siswa = $_POST['id_siswa'];
+    $id_mapel = $_POST['id_mapel'];
+    $nilai    = $_POST['nilai'];
 
-    if($id_mapel == "" || $judul == "" || $deskripsi == "" || $deadline == ""){
+    if($id_siswa == "" || $id_mapel == "" || $nilai == ""){
         echo "<script>alert('Semua field wajib diisi!');</script>";
     } else {
 
         $query = mysqli_query($conn,"
-            INSERT INTO tugas (id_mapel, judul, deskripsi, deadline)
-            VALUES ('$id_mapel','$judul','$deskripsi','$deadline')
+            INSERT INTO nilai (id_siswa, id_mapel, nilai)
+            VALUES ('$id_siswa','$id_mapel','$nilai')
         ");
 
         if($query){
-            header("Location: tugas_guru.php");
+            header("Location: nilai.php");
             exit;
         } else {
             echo "<script>alert('Gagal menambah data: " . mysqli_error($conn) . "');</script>";
@@ -42,12 +41,12 @@ if(isset($_GET['hapus'])){
     $id = $_GET['hapus'];
 
     $query = mysqli_query($conn,"
-        DELETE FROM tugas
-        WHERE id_tugas='$id'
+        DELETE FROM nilai
+        WHERE id_nilai='$id'
     ");
 
     if($query){
-        header("Location: tugas_guru.php");
+        header("Location: nilai.php");
         exit;
     } else {
         echo "<script>alert('Gagal menghapus data: " . mysqli_error($conn) . "');</script>";
@@ -59,27 +58,25 @@ if(isset($_GET['hapus'])){
 ========================= */
 if(isset($_POST['update'])){
 
-    $id        = $_POST['id_tugas'];
-    $id_mapel  = $_POST['id_mapel'];
-    $judul     = $_POST['judul'];
-    $deskripsi = $_POST['deskripsi'];
-    $deadline  = $_POST['deadline'];
+    $id       = $_POST['id_nilai'];
+    $id_siswa = $_POST['id_siswa'];
+    $id_mapel = $_POST['id_mapel'];
+    $nilai    = $_POST['nilai'];
 
-    if($id_mapel == "" || $judul == "" || $deskripsi == "" || $deadline == ""){
+    if($id_siswa == "" || $id_mapel == "" || $nilai == ""){
         echo "<script>alert('Semua field wajib diisi!');</script>";
     } else {
 
         $query = mysqli_query($conn,"
-            UPDATE tugas SET
+            UPDATE nilai SET
+                id_siswa='$id_siswa',
                 id_mapel='$id_mapel',
-                judul='$judul',
-                deskripsi='$deskripsi',
-                deadline='$deadline'
-            WHERE id_tugas='$id'
+                nilai='$nilai'
+            WHERE id_nilai='$id'
         ");
 
         if($query){
-            header("Location: tugas_guru.php");
+            header("Location: nilai.php");
             exit;
         } else {
             echo "<script>alert('Gagal update data: " . mysqli_error($conn) . "');</script>";
@@ -97,12 +94,21 @@ if(isset($_GET['edit'])){
     $id = $_GET['edit'];
 
     $query = mysqli_query($conn,"
-        SELECT * FROM tugas
-        WHERE id_tugas='$id'
+        SELECT * FROM nilai
+        WHERE id_nilai='$id'
     ");
 
     $dataEdit = mysqli_fetch_assoc($query);
 }
+
+/* =========================
+   AMBIL DATA SISWA UNTUK DROPDOWN
+========================= */
+$dataSiswa = mysqli_query($conn,"
+    SELECT id_siswa, nama
+    FROM siswa
+    ORDER BY nama ASC
+");
 
 /* =========================
    AMBIL DATA MAPEL UNTUK DROPDOWN
@@ -119,7 +125,7 @@ $dataMapel = mysqli_query($conn,"
 <html>
 <head>
 <meta charset="UTF-8">
-<title>CRUD Tugas Guru</title>
+<title>CRUD Nilai</title>
 
 <style>
 body{
@@ -145,16 +151,11 @@ form{
 }
 
 input,
-select,
-textarea{
+select{
     width:100%;
     padding:10px;
     margin-bottom:10px;
     box-sizing:border-box;
-}
-
-textarea{
-    resize:vertical;
 }
 
 button{
@@ -181,7 +182,6 @@ th,td{
     border:1px solid #ddd;
     padding:10px;
     text-align:center;
-    vertical-align:top;
 }
 
 .edit{
@@ -212,22 +212,45 @@ th,td{
 
 <div class="container">
 
-<h2>Kelola Tugas Guru</h2>
+<h2>Kelola Nilai Siswa</h2>
 
 <?php
+// cek apakah tabel siswa kosong
+$cekSiswa = mysqli_query($conn, "SELECT COUNT(*) as total FROM siswa");
+$rowSiswa = mysqli_fetch_assoc($cekSiswa);
+
+// cek apakah tabel mapel kosong
 $cekMapel = mysqli_query($conn, "SELECT COUNT(*) as total FROM mata_pelajaran");
 $rowMapel = mysqli_fetch_assoc($cekMapel);
 
+if($rowSiswa['total'] == 0){
+    echo "<p class='kosong'>Data siswa masih kosong. Isi tabel siswa dulu sebelum menambah nilai.</p>";
+}
+
 if($rowMapel['total'] == 0){
-    echo "<p class='kosong'>Data mata pelajaran masih kosong. Isi tabel mata_pelajaran dulu sebelum menambah tugas.</p>";
+    echo "<p class='kosong'>Data mata pelajaran masih kosong. Isi tabel mata_pelajaran dulu sebelum menambah nilai.</p>";
 }
 ?>
 
 <form method="POST">
 
 <?php if($dataEdit){ ?>
-    <input type="hidden" name="id_tugas" value="<?= $dataEdit['id_tugas']; ?>">
+    <input type="hidden"
+           name="id_nilai"
+           value="<?= $dataEdit['id_nilai']; ?>">
 <?php } ?>
+
+<label>Siswa</label>
+<select name="id_siswa" required>
+    <option value="">-- Pilih Siswa --</option>
+    <?php
+    mysqli_data_seek($dataSiswa, 0);
+    while($siswa = mysqli_fetch_assoc($dataSiswa)){
+        $selected = ($dataEdit && $dataEdit['id_siswa'] == $siswa['id_siswa']) ? "selected" : "";
+        echo "<option value='".$siswa['id_siswa']."' $selected>".$siswa['nama']." (ID: ".$siswa['id_siswa'].")</option>";
+    }
+    ?>
+</select>
 
 <label>Mata Pelajaran</label>
 <select name="id_mapel" required>
@@ -241,30 +264,37 @@ if($rowMapel['total'] == 0){
     ?>
 </select>
 
-<label>Judul Tugas</label>
-<input type="text" name="judul" required value="<?= $dataEdit['judul'] ?? ''; ?>">
-
-<label>Deskripsi</label>
-<textarea name="deskripsi" rows="4" required><?= $dataEdit['deskripsi'] ?? ''; ?></textarea>
-
-<label>Deadline</label>
-<input type="date" name="deadline" required value="<?= $dataEdit['deadline'] ?? ''; ?>">
+<label>Nilai</label>
+<input type="number"
+       step="0.01"
+       min="0"
+       max="100"
+       name="nilai"
+       required
+       value="<?= $dataEdit['nilai'] ?? ''; ?>">
 
 <?php if($dataEdit){ ?>
-    <button type="submit" name="update">Update Tugas</button>
+
+<button type="submit" name="update">
+    Update Nilai
+</button>
+
 <?php } else { ?>
-    <button type="submit" name="tambah">Tambah Tugas</button>
+
+<button type="submit" name="tambah">
+    Tambah Nilai
+</button>
+
 <?php } ?>
 
 </form>
 
 <table>
 <tr>
-    <th>ID Tugas</th>
+    <th>ID Nilai</th>
+    <th>Nama Siswa</th>
     <th>Mata Pelajaran</th>
-    <th>Judul</th>
-    <th>Deskripsi</th>
-    <th>Deadline</th>
+    <th>Nilai</th>
     <th>Aksi</th>
 </tr>
 
@@ -272,14 +302,14 @@ if($rowMapel['total'] == 0){
 
 $data = mysqli_query($conn,"
     SELECT 
-        tugas.id_tugas,
-        tugas.judul,
-        tugas.deskripsi,
-        tugas.deadline,
+        nilai.id_nilai,
+        nilai.nilai,
+        siswa.nama AS nama_siswa,
         mata_pelajaran.nama_mapel
-    FROM tugas
-    JOIN mata_pelajaran ON tugas.id_mapel = mata_pelajaran.id_mapel
-    ORDER BY tugas.id_tugas DESC
+    FROM nilai
+    JOIN siswa ON nilai.id_siswa = siswa.id_siswa
+    JOIN mata_pelajaran ON nilai.id_mapel = mata_pelajaran.id_mapel
+    ORDER BY nilai.id_nilai DESC
 ");
 
 if(mysqli_num_rows($data) > 0){
@@ -287,14 +317,21 @@ if(mysqli_num_rows($data) > 0){
 ?>
 
 <tr>
-    <td><?= $row['id_tugas']; ?></td>
+    <td><?= $row['id_nilai']; ?></td>
+    <td><?= $row['nama_siswa']; ?></td>
     <td><?= $row['nama_mapel']; ?></td>
-    <td><?= $row['judul']; ?></td>
-    <td><?= $row['deskripsi']; ?></td>
-    <td><?= $row['deadline']; ?></td>
+    <td><?= $row['nilai']; ?></td>
     <td>
-        <a class="edit" href="tugas_guru.php?edit=<?= $row['id_tugas']; ?>">Edit</a>
-        <a class="hapus" href="tugas_guru.php?hapus=<?= $row['id_tugas']; ?>" onclick="return confirm('Yakin ingin menghapus data?')">Hapus</a>
+        <a class="edit"
+           href="nilai.php?edit=<?= $row['id_nilai']; ?>">
+           Edit
+        </a>
+
+        <a class="hapus"
+           href="nilai.php?hapus=<?= $row['id_nilai']; ?>"
+           onclick="return confirm('Yakin ingin menghapus data?')">
+           Hapus
+        </a>
     </td>
 </tr>
 
@@ -303,7 +340,7 @@ if(mysqli_num_rows($data) > 0){
 } else {
 ?>
 <tr>
-    <td colspan="6">Belum ada data tugas</td>
+    <td colspan="5">Belum ada data nilai</td>
 </tr>
 <?php } ?>
 

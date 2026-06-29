@@ -39,16 +39,16 @@ $data = mysqli_fetch_assoc($query);
         <div class="sub">Education Flexible</div>
       </div>
     </div>
-    <nav>
-        <ul>
-            <li><a href="dashboard.html" class="active">Beranda</a></li>
-            <li><a href="presensi.html">Presensi</a></li>
-            <li><a href="jadwal.html">Jadwal</a></li>
-            <li><a href="#">AI Helper</a></li>
-            <li><a href="tampilanVideo.php">Video</a></li>
-            <li><a href="tugas.php">Tugas</a></li>
-        </ul>
-    </nav>
+      <nav>
+          <ul>
+              <li><a href="dashboard.php" class="active">Beranda</a></li>
+              <li><a href="presensi.php">Presensi</a></li>
+              <li><a href="jadwal.php">Jadwal</a></li>
+              <li><a href="#">AI Helper</a></li>
+              <li><a href="tampilanVideo.php">Video</a></li>
+              <li><a href="tugas.php">Tugas</a></li>
+          </ul>
+      </nav>
     <div class="right-section">
       <div class="language">
         <img src="language_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="bahasa" class="logo-bahasa">
