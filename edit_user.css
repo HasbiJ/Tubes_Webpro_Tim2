@@ -1,0 +1,59 @@
+/* Styling untuk halaman Edit User agar konsisten dengan Dashboard Admin */
+.card-edit {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #e2e6ef;
+  width: 100%;
+  max-width: 450px;
+  margin: 20px auto;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.card-edit h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #0b1a3a;
+  border-left: 4px solid #ff6b00;
+  padding-left: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-group input, 
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e2e6ef;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.btn-update {
+  background: #0b1a3a;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+  transition: background 0.2s;
+}
+
+.btn-update:hover {
+  background: #ff6b00;
+}

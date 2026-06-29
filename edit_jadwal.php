@@ -25,7 +25,7 @@ if (isset($_POST['update'])) {
                              WHERE id_jadwal='$id'");
     
     if ($update) {
-        echo "<script>alert('Jadwal berhasil diupdate!'); window.location.href='buat_jadwal.php';</script>";
+        echo "<script>alert('Jadwal berhasil diupdate!'); window.location.href='../Tubes_Webpro_Tim2/admin/crud_jadwal_full.php';</script>";
     }
 }
 
@@ -35,12 +35,15 @@ $data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM jadwal WHERE id_ja
 
 <!DOCTYPE html>
 <html lang="id">
-<head>
+<body>
+    <head>
     <meta charset="UTF-8">
-    <title>Edit Jadwal - EduFlex</title>
-    <link rel="stylesheet" href="buat_jadwal.css">
+    <title>Manajemen User - EduFlex</title>
+    <link rel="stylesheet" href="../frontend_js/dashboard_admin.css">
+    <link rel="stylesheet" href="edit_jadwal.css">
 </head>
 <body>
+    
   <main class="main">
     <div class="form-container">
         <h2>Edit Jadwal Pelajaran</h2>

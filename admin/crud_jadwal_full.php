@@ -124,8 +124,8 @@ if (isset($_POST['update'])) {
         </div>
         <nav>
             <ul>
-                <li><a href="dashboard_admin.php">Beranda</a></li>
-                <li><a href="../buat_jadwal.php" class="active">Buat Jadwal</a></li>
+                <li><a href="../admin/dashboard_admin.php">Beranda</a></li>
+                <li><a href="../admin/crud_jadwal_full.php" class="active">Buat Jadwal</a></li>
                 <li><a href="../admin/crud_user_full.php">Buat User</a></li>
             </ul>
         </nav>
