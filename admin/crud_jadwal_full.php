@@ -116,7 +116,7 @@ if (isset($_POST['update'])) {
 <body>
     <header>
         <div class="brand">
-            <img src="../logo project website uid.png" alt="logo" class="logo">
+            <img src="../Tubes_Webpro_Tim2/frontend_js/logo project website uid.png" alt="logo" class="logo">
             <div>
                 <div>EduFlex</div>
                 <div class="sub">Education Flexible</div>

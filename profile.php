@@ -84,7 +84,7 @@ $data = mysqli_fetch_assoc($q);
                 <div style="flex: 1; line-height: 1.8; color: #333;">
                     <h3 style="margin: 0 0 10px 0; font-size: 22px; color: #0b1a3a;"><?= $data['nama']; ?></h3>
                     <div style="font-size: 14px;"><strong>NISN:</strong> <?= $data['nisn'] ?: '-'; ?></div>
-                    <div style="font-size: 14px;"><strong>Kelas:</strong> D3SI-49-01</div>
+                    <div style="font-size: 14px;"><strong>Kelas:</strong> XI MIPA 1</div>
                     <div style="font-size: 14px;"><strong>Email:</strong> <?= $data['email'] ?: '-'; ?></div>
                     <div style="font-size: 14px;"><strong>No HP:</strong> <?= $data['no_hp'] ?: '-'; ?></div>
                     <div style="font-size: 14px;"><strong>Alamat:</strong> <?= $data['alamat'] ?: '-'; ?></div>
