@@ -2,6 +2,9 @@
 session_start();
 include "config/koneksi.php";
 
+$nama_admin = isset($_SESSION['nama_admin']) ? $_SESSION['nama_admin'] : 'Admin';
+$foto_admin = isset($_SESSION['foto_admin']) ? $_SESSION['foto_admin'] : 'default.jpg';
+
 // Proteksi akses
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
@@ -39,11 +42,52 @@ $data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM jadwal WHERE id_ja
     <head>
     <meta charset="UTF-8">
     <title>Manajemen User - EduFlex</title>
-    <link rel="stylesheet" href="../frontend_js/dashboard_admin.css">
+    <link rel="stylesheet" href="../Tubes_Webpro_Tim2/frontend_js/dashboard_admin.css">
     <link rel="stylesheet" href="edit_jadwal.css">
 </head>
 <body>
-    
+    <header>
+    <div class="brand">
+      <img src="../Tubes_Webpro_Tim2/logo project website uid.png" alt="logo" class="logo">
+      <div>
+        <div>EduFlex</div>
+        <div class="sub">Education Flexible</div>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="../Tubes_Webpro_Tim2/admin/dashboard_admin.php">Beranda</a></li>
+        <li><a href="../Tubes_Webpro_Tim2/admin/crud_jadwal_full.php" class="active">Buat Jadwal</a></li>
+        <li><a href="../Tubes_Webpro_Tim2/admin/crud_user_full.php">Buat User</a></li>
+      </ul>
+    </nav>
+    <div class="right-section">
+      <div class="language">
+        <img src="../Tubes_Webpro_Tim2/language_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="bahasa" class="logo-bahasa">
+        <select class="select">
+          <option>ID</option>
+          <option>ENG</option>
+        </select>
+      </div>
+      <div class="account">
+        <img src="../Tubes_Webpro_Tim2/avatars/<?= htmlspecialchars($foto_admin); ?>" class="avatar" alt="avatar">
+        <div><?= htmlspecialchars($nama_admin); ?></div>
+        <a href="../Tubes_Webpro_Tim2/logout.php" style="margin-left: 15px; color: #ff6b00; text-decoration: none; font-weight: bold;">
+          Keluar
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <aside class="sidebar">
+      <div class="profile">
+        <img src="<?= htmlspecialchars($foto_admin); ?>" alt="foto admin">
+        <h3><?= htmlspecialchars($nama_admin); ?></h3>
+        <p class="role-badge">Administrator</p>
+      </div>
+    </aside>
   <main class="main">
     <div class="form-container">
         <h2>Edit Jadwal Pelajaran</h2>
